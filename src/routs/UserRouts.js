@@ -19,6 +19,7 @@ function UserRouts(props) {
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/shop" element={<Shop />} />
                 <Route exact path="/shop_detail" element={<Shop_detail />} />
+                <Route exact path="/shop/:id" element={<Shop_detail />}/>
                 <Route exact path="/cart" element={<Cart />} />
                 <Route exact path="/checkout" element={<Checkout />} />
                 <Route exact path="/testimonial" element={<Testimonial />} />

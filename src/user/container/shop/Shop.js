@@ -1,6 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Shop(props) {
+
+
     return (
         <div>
             {/* Modal Search Start */}
@@ -205,6 +208,7 @@ function Shop(props) {
                                 <div className="col-lg-9">
                                     <div className="row g-4 justify-content-center">
                                         <div className="col-md-6 col-lg-6 col-xl-4">
+                                            <Link to="/shop/1">
                                             <div className="rounded position-relative fruite-item">
                                                 <div className="fruite-img">
                                                     <img src="img/fruite-item-5.jpg" className="img-fluid w-100 rounded-top" alt />
@@ -219,6 +223,7 @@ function Shop(props) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            </Link>
                                         </div>
                                         <div className="col-md-6 col-lg-6 col-xl-4">
                                             <div className="rounded position-relative fruite-item">

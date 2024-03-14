@@ -1,6 +1,9 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 function Shop_detail(props) {
+const {id}=useParams();
+
     return (
         <div>
             {/* Modal Search Start */}
