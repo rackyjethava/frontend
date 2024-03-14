@@ -1,5 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+//import db.json hear
+
+
+// console.log(fruitdata);
 
 function Shop(props) {
 
@@ -226,6 +230,7 @@ function Shop(props) {
                                             </Link>
                                         </div>
                                         <div className="col-md-6 col-lg-6 col-xl-4">
+                                        <Link to="/shop/2">
                                             <div className="rounded position-relative fruite-item">
                                                 <div className="fruite-img">
                                                     <img src="img/fruite-item-5.jpg" className="img-fluid w-100 rounded-top" alt />
@@ -240,8 +245,10 @@ function Shop(props) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            </Link>
                                         </div>
                                         <div className="col-md-6 col-lg-6 col-xl-4">
+                                        <Link to="/shop/3">
                                             <div className="rounded position-relative fruite-item">
                                                 <div className="fruite-img">
                                                     <img src="img/fruite-item-2.jpg" className="img-fluid w-100 rounded-top" alt />
@@ -256,6 +263,7 @@ function Shop(props) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            </Link>
                                         </div>
                                         <div className="col-md-6 col-lg-6 col-xl-4">
                                             <div className="rounded position-relative fruite-item">
