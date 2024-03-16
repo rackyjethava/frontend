@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
-
 // console.log(fruitdata);
 
 function Shop(props) {
     const [product, setproduct] = useState([])
     const [category, setCategory] = useState([])
+    const [types, setTypes] = useState([])
+    const [filteredProduct, setFilteredProduct] = useState([]);
     const fruitdata = async () => {
         const respnce = await fetch("http://localhost:8000/Fruits");
         const data = await respnce.json();
@@ -17,12 +18,32 @@ function Shop(props) {
 
         const uniqueNames = [...new Set(data.map(item => item.name))];
 
+        const uniqType = [...new Set(data.map(item => item.type))];
+        setTypes(uniqType)
 
         setCategory(uniqueNames)
 
-        console.log(data);
+        // console.log(data);
     }
-    console.log(category);
+
+    const handleFilter = (serch) => {
+        let fdata = product.filter((v) => {
+            return v.name.toLowerCase().includes(serch);
+        });
+        setFilteredProduct(fdata);
+    }
+
+    const handletype = (type) => {
+        if (type === '') {
+          setFilteredProduct(product);
+        } else {
+          let fdata = product.filter((v) => v.type === type);
+          setFilteredProduct(fdata);
+        }
+      };
+      
+
+    // console.log(filteredProduct);
 
     useEffect(() => {
         fruitdata();
@@ -68,7 +89,7 @@ function Shop(props) {
                             <div className="row g-4">
                                 <div className="col-xl-3">
                                     <div className="input-group w-100 mx-auto d-flex">
-                                        <input type="search" className="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" />
+                                        <input onChange={(event) => handleFilter(event.target.value)} type="search" className="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" />
                                         <span id="search-icon-1" className="input-group-text p-3"><i className="fa fa-search" /></span>
                                     </div>
                                 </div>
@@ -116,26 +137,18 @@ function Shop(props) {
                                         <div className="col-lg-12">
                                             <div className="mb-3">
                                                 <h4>Additional</h4>
-                                                <div className="mb-2">
-                                                    <input type="radio" className="me-2" id="Categories-1" name="Categories-1" defaultValue="Beverages" />
-                                                    <label htmlFor="Categories-1"> Organic</label>
-                                                </div>
-                                                <div className="mb-2">
-                                                    <input type="radio" className="me-2" id="Categories-2" name="Categories-1" defaultValue="Beverages" />
-                                                    <label htmlFor="Categories-2"> Fresh</label>
-                                                </div>
-                                                <div className="mb-2">
-                                                    <input type="radio" className="me-2" id="Categories-3" name="Categories-1" defaultValue="Beverages" />
-                                                    <label htmlFor="Categories-3"> Sales</label>
-                                                </div>
-                                                <div className="mb-2">
-                                                    <input type="radio" className="me-2" id="Categories-4" name="Categories-1" defaultValue="Beverages" />
-                                                    <label htmlFor="Categories-4"> Discount</label>
-                                                </div>
-                                                <div className="mb-2">
-                                                    <input type="radio" className="me-2" id="Categories-5" name="Categories-1" defaultValue="Beverages" />
-                                                    <label htmlFor="Categories-5"> Expired</label>
-                                                </div>
+                                                {
+                                                    types.map((n) => {
+                                                        return (
+                                                            <div className="mb-2">
+                                                                <input
+                                                                    onClick={(event) => handletype(event.target.value)} type="radio" className="me-2" id={`Categories-${n}`} name="Categories-1" value={n}/>
+                                                                <label > {n}</label>
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+
                                             </div>
                                         </div>
                                         <div className="col-lg-12">
@@ -214,7 +227,7 @@ function Shop(props) {
                                 <div className="col-lg-9">
                                     <div className="row g-4 justify-content-center">
                                         {
-                                            product.map((v) => (
+                                            filteredProduct.map((v) => (
                                                 <div className="col-md-6 col-lg-6 col-xl-4">
                                                     <Link to={`/shop/${v.id}`}>
                                                         <div className="rounded position-relative fruite-item">

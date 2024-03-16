@@ -7,7 +7,8 @@
             "category": "Fruits",
             "name": "Grapes",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Expired"
           },
           {
             "title": "Fresh Fruits",
@@ -16,7 +17,8 @@
             "category": "Fruits",
             "name": "Grapes",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Organic"
           },
           {
             "title": "Fresh Fruits",
@@ -25,7 +27,8 @@
             "category": "Fruits",
             "name": "Raspberries",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Discount"
           },
           {
             "title": "Fresh Fruits",
@@ -34,7 +37,8 @@
             "category": "Fruits",
             "name": "Apricots",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Organic"
           },
           {
             "title": "Fresh Fruits",
@@ -43,7 +47,8 @@
             "category": "Fruits",
             "name": "Banana",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Sales"
           },
           {
             "title": "Fresh Fruits",
@@ -52,7 +57,8 @@
             "category": "Fruits",
             "name": "Oranges",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Fresh"
           },
           {
             "title": "Fresh Fruits",
@@ -61,7 +67,8 @@
             "category": "Fruits",
             "name": "Raspberries",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Discount"
           },
           {
             "title": "Fresh Fruits",
@@ -70,7 +77,8 @@
             "category": "Fruits",
             "name": "Grapes",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Organic"
           },
           {
             "title": "Fresh Fruits",
@@ -79,7 +87,8 @@
             "category": "Fruits",
             "name": "Oranges",
             "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-            "price": "$4.99 / kg"
+            "price": "$4.99 / kg",
+            "type":"Fresh"
           }
     ]
   
