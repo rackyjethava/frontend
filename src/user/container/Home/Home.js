@@ -6,66 +6,66 @@ import { Button } from '@mui/material';
 
 function Home(props) {
 
-    let owlVagitableOption={
+    let owlVagitableOption = {
         autoplay: true,
         smartSpeed: 1500,
         center: false,
         dots: true,
         loop: true,
         margin: 25,
-        nav : true,
-        navText : [
+        nav: true,
+        navText: [
             '<div class="owl-prev"><i class="bi bi-arrow-left"></i></div>',
             '<div class="owl-next"><i class="bi bi-arrow-right"></i></div>'
         ],
         responsiveClass: true,
         responsive: {
-            0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:2
+            768: {
+                items: 2
             },
-            992:{
-                items:3
+            992: {
+                items: 3
             },
-            1200:{
-                items:4
+            1200: {
+                items: 4
             }
         }
     }
 
-    let owltestimonialOption={
+    let owltestimonialOption = {
         autoplay: true,
         smartSpeed: 2000,
         center: false,
         dots: true,
         loop: true,
         margin: 25,
-        nav : true,
-        navText : [
+        nav: true,
+        navText: [
             '<div class="owl-prev"><i class="bi bi-arrow-left"></i></div>',
             '<div class="owl-next"><i class="bi bi-arrow-right"></i></div>'
         ],
         responsiveClass: true,
         responsive: {
-            0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:1
+            768: {
+                items: 1
             },
-            992:{
-                items:2
+            992: {
+                items: 2
             },
-            1200:{
-                items:2
+            1200: {
+                items: 2
             }
         }
     }
@@ -109,8 +109,8 @@ function Home(props) {
                 </div>
             </div>
             <Button variant="text">Text</Button>
-<Button variant="contained">Contained</Button>
-<Button variant="outlined">Outlined</Button><Button variant="contained">Contained</Button>
+            <Button variant="contained">Contained</Button>
+            <Button variant="outlined">Outlined</Button><Button variant="contained">Contained</Button>
             {/* Hero End */}
             {/* Featurs Section Start */}
             <div className="container-fluid featurs py-5">
