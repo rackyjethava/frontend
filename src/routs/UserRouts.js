@@ -11,6 +11,8 @@ import Testimonial from '../user/container/page/testimonial/Testimonial';
 import Error from '../user/container/page/error/Error';
 import Contect from '../user/container/contect/Contect';
 import UserLogin from '../user/container/login/UserLogin';
+import UserRagister from '../user/container/ragister/UserRagister';
+
 
 function UserRouts(props) {
     return (
@@ -27,6 +29,8 @@ function UserRouts(props) {
                 <Route exact path="/error" element={<Error />} />
                 <Route exact path="/contect" element={<Contect />} />
                 <Route exact path="/login" element={<UserLogin />} />
+                <Route exact path="/register" element={<UserRagister />} />
+                
             </Routes>
             <Footer />
         </>

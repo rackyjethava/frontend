@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 
 function UserLogin(props) {
@@ -13,7 +13,7 @@ function UserLogin(props) {
     return (
         <div>
              <div className="container-fluid page-header py-5">
-                <h1 className="text-center text-white display-6">Shop</h1>
+                <h1 className="text-center text-white display-6">Login</h1>
                 <ol className="breadcrumb justify-content-center mb-0">
                     <li className="breadcrumb-item"><a href="#">Home</a></li>
                     <li className="breadcrumb-item"><a href="#">Pages</a></li>
