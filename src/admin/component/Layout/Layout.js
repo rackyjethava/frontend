@@ -21,6 +21,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import AppleIcon from '@mui/icons-material/Apple';
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 import { NavLink } from 'react-router-dom';
+import CategoryIcon from '@mui/icons-material/Category';
 
 const drawerWidth = 240;
 
@@ -95,6 +96,9 @@ const adminlink=[
     },
     {
         title:"Vagitable" ,icon:<BakeryDiningIcon /> ,to:"/admin/vagitable"
+    },
+    {
+      title:"Category", icon:<CategoryIcon />,to:"/admin/category"
     }
 ]
 

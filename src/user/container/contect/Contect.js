@@ -1,6 +1,31 @@
 import React from 'react';
+import { object, string, number, date, InferType } from 'yup';
+import { useFormik } from 'formik';
 
 function Contect(props) {
+
+    let contectSchema = object({
+        name: string().required(),
+
+        email: string().email().required(),
+
+        message: string().required().min(10),
+
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+            message: '',
+        },
+        validationSchema: contectSchema,
+        onSubmit: values => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    });
+
+    const { handleSubmit, handleChange, handleBlur, values, touched, errors } = formik;
     return (
 
         <div>
@@ -49,11 +74,52 @@ function Contect(props) {
                                 </div>
                             </div>
                             <div className="col-lg-7">
-                                <form action className>
-                                    <input type="text" className="w-100 form-control border-0 py-3 mb-4" placeholder="Your Name" />
-                                    <input type="email" className="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your Email" />
-                                    <textarea className="w-100 form-control border-0 mb-4" rows={5} cols={10} placeholder="Your Message" defaultValue={""} />
-                                    <button className="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Submit</button>
+                                <form onSubmit={handleSubmit}>
+                                    <span
+
+                                        style={{ color: "red", marginTop: "-10px" }}>
+                                        {touched.name && errors.name ? errors.name : ''}
+                                    </span>
+                                    <input
+                                        type="text"
+                                        className="w-100 form-control border-0 py-3 mb-4"
+                                        placeholder="Your Name"
+                                        name='name'
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.name}
+                                    />
+                                    <span style={{ color: "red", marginTop: "-10px" }}>
+                                        {touched.email && errors.email ? errors.email : ''}
+                                    </span>
+                                    <input
+                                        type="email"
+                                        className="w-100 form-control border-0 py-3 mb-4"
+                                        placeholder="Enter Your Email"
+                                        name='email'
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.email}
+                                    />
+
+                                    <span style={{ color: "red", marginTop: "-10px" }}>
+                                        {touched.message && errors.message ? errors.message : ''}
+                                    </span>
+                                    <textarea
+                                        className="w-100 form-control border-0 mb-4"
+                                        rows={5}
+                                        cols={10}
+                                        placeholder="Your Message"
+                                        defaultValue={""}
+                                        name='message'
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.message}
+                                    />
+
+                                    <button
+                                        className="w-100 btn form-control border-secondary py-3 bg-white text-primary "
+                                        type="submit">Submit</button>
                                 </form>
                             </div>
                             <div className="col-lg-5">
