@@ -52,7 +52,7 @@ export default function Category() {
         setOpen(true);
     };
 
-    const rno=Math.floor(Math.random(),10000);
+    const rno=Math.floor(Math.random()*10000);
 
     const handleClose = () => {
         setOpen(false);
