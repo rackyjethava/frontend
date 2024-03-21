@@ -11,6 +11,8 @@ import { useFormik } from 'formik';
 import { DataGrid } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { IconButton } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 
 export default function Category() {
     const [open, setOpen] = React.useState(false);
@@ -27,6 +29,8 @@ export default function Category() {
         if(localdata){
             setdata(localdata)
         }
+
+
     }
 
     useEffect(()=>{
@@ -69,11 +73,26 @@ export default function Category() {
             localStorage.setItem("category", JSON.stringify([{...data,id:rno}]))
         }
     }
+    const handleDelete = (id) => {
+        let filteredData = categorydata.filter((v) => v.id !== id);
+        setdata(filteredData);
+        localStorage.setItem('category', JSON.stringify(filteredData));
+    };
     const columns = [
 
         { field: 'name', headerName: 'name', width: 130 },
         { field: 'description', headerName: 'description', width: 130 },
-       
+        {
+            field: 'delete',
+            headerName: 'Delete',
+            width: 100,
+            renderCell: (params) => (
+                <IconButton onClick={() => handleDelete(params.row.id)}>
+                <Delete />
+            </IconButton>
+            ),
+          },
+
     ];
 
 
