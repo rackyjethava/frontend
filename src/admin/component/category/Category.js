@@ -8,23 +8,41 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { object, string, number, date, InferType } from 'yup';
 import { useFormik } from 'formik';
+import { DataGrid } from '@mui/x-data-grid';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Category() {
     const [open, setOpen] = React.useState(false);
+    const[categorydata,setdata]=useState([])
     let contectSchema = object({
         name: string().required(),
-        message: string().required().min(10),
+        description: string().required().min(10),
 
     });
+
+    const getdata=()=>{
+        let localdata=JSON.parse(localStorage.getItem('category'));
+
+        if(localdata){
+            setdata(localdata)
+        }
+    }
+
+    useEffect(()=>{
+        getdata();
+    },[])
 
     const formik = useFormik({
         initialValues: {
             name: '',
-            message: '',
+            description: '',
         },
         validationSchema: contectSchema,
-        onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+        onSubmit: (values, { resetForm }) => {
+            handleAdd(values)
+            resetForm()
+            handleClose(true)
         },
     });
 
@@ -34,9 +52,31 @@ export default function Category() {
         setOpen(true);
     };
 
+    const rno=Math.floor(Math.random(),10000);
+
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleAdd = (data) => {
+        let localdata = JSON.parse(localStorage.getItem("category"))
+
+        if (localdata) {
+            localdata.push({...data,id:rno});
+            localStorage.setItem("category", JSON.stringify(localdata))
+
+        } else {
+            localStorage.setItem("category", JSON.stringify([{...data,id:rno}]))
+        }
+    }
+    const columns = [
+
+        { field: 'name', headerName: 'name', width: 130 },
+        { field: 'description', headerName: 'description', width: 130 },
+       
+    ];
+
+
 
     return (
         <React.Fragment>
@@ -46,26 +86,10 @@ export default function Category() {
             <Dialog
                 open={open}
                 onClose={handleClose}
-                PaperProps={{
-                    component: 'form',
-
-                    onSubmit: (event) => {
-                        event.preventDefault();
-                        const formData = new FormData(event.currentTarget);
-                        const formJson = Object.fromEntries(formData.entries());
-                        const email = formJson.email;
-                        console.log(email);
-                        handleClose();
-                    },
-                }}
             >
                 <form onSubmit={handleSubmit}>
                     <DialogTitle>Subscribe</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
-                            To subscribe to this website, please enter your email address here. We
-                            will send updates occasionally.
-                        </DialogContentText>
                         <TextField
                             margin="dense"
                             id="name"
@@ -77,33 +101,47 @@ export default function Category() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.name}
+                            error={touched.name && errors.name ? errors.name : false}
+                            helperText={touched.name && errors.name ? errors.name : ""}
                         />
-                        <span
-                            style={{ color: "red", marginTop: "-10px" }}>
-                            {touched.name && errors.name ? errors.name : ''}
-                        </span>
+
                         <TextField
                             margin="dense"
                             id="description"
-                            name="message"
+                            name="description"
                             label="Description"
                             type="text"
                             fullWidth
                             variant="standard"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.message}
+                            value={values.description}
+                            error={touched.description && errors.description ? errors.description : false}
+                            helperText={touched.description && errors.description ? errors.description : ""}
+
                         />
-                        <span style={{ color: "red", marginTop: "-10px" }}>
-                            {touched.message && errors.message ? errors.message : ''}
-                        </span>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button onClick={handleClickOpen} type="submit">Subscribe</Button>
+                        </DialogActions>
                     </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit">Subscribe</Button>
-                    </DialogActions>
                 </form>
+
             </Dialog>
+            <div style={{ height: 400, width: '100%' }}>
+                <DataGrid
+                    rows={categorydata}
+                    columns={columns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                />
+            </div>
         </React.Fragment>
     );
 }
+
