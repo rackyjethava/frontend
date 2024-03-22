@@ -13,29 +13,29 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function Category() {
     const [open, setOpen] = React.useState(false);
-    const[categorydata,setdata]=useState([])
+    const [categorydata, setdata] = useState([]);
+    const [editing, setEditing] = useState(null);
     let contectSchema = object({
         name: string().required(),
         description: string().required().min(10),
 
     });
 
-    const getdata=()=>{
-        let localdata=JSON.parse(localStorage.getItem('category'));
+    const getdata = () => {
+        let localdata = JSON.parse(localStorage.getItem('category'));
 
-        if(localdata){
+        if (localdata) {
             setdata(localdata)
         }
-
-
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getdata();
-    },[])
+    }, [])
 
     const formik = useFormik({
         initialValues: {
@@ -44,7 +44,11 @@ export default function Category() {
         },
         validationSchema: contectSchema,
         onSubmit: (values, { resetForm }) => {
-            handleAdd(values)
+            if (editing) {
+                handleUpdate(values)
+            } else {
+                handleAdd(values)
+            }
             resetForm()
             handleClose(true)
         },
@@ -56,42 +60,76 @@ export default function Category() {
         setOpen(true);
     };
 
-    const rno=Math.floor(Math.random()*10000);
+    const rno = Math.floor(Math.random() * 10000);
 
     const handleClose = () => {
         setOpen(false);
+        formik.resetForm();
+        setEditing(null)
     };
 
     const handleAdd = (data) => {
         let localdata = JSON.parse(localStorage.getItem("category"))
 
         if (localdata) {
-            localdata.push({...data,id:rno});
+            localdata.push({ ...data, id: rno });
             localStorage.setItem("category", JSON.stringify(localdata))
 
         } else {
-            localStorage.setItem("category", JSON.stringify([{...data,id:rno}]))
+            localStorage.setItem("category", JSON.stringify([{ ...data, id: rno }]))
         }
+
+        getdata()
     }
-    const handleDelete = (id) => {
-        let filteredData = categorydata.filter((v) => v.id !== id);
-        setdata(filteredData);
-        localStorage.setItem('category', JSON.stringify(filteredData));
+
+    const handleDelete = (data) => {
+        let localdata = JSON.parse(localStorage.getItem("category"))
+
+        const fdata = localdata.filter((v) => v.id !== data.id)
+
+        localStorage.setItem("category", JSON.stringify(fdata))
+        getdata()
+
     };
+
+    const handleEdit = (data) => {
+        // console.log(data);
+
+        formik.setValues(data)
+        setOpen(true);
+        setEditing(data);
+    }
+
+    const handleUpdate = (data) => {
+        let localdata = JSON.parse(localStorage.getItem("category"))
+
+        const index = localdata.findIndex((v) => v.id === data.id)
+        localdata[index] = data
+
+        localStorage.setItem("category", JSON.stringify(localdata))
+
+        getdata()
+    }
+
     const columns = [
 
         { field: 'name', headerName: 'name', width: 130 },
         { field: 'description', headerName: 'description', width: 130 },
         {
-            field: 'delete',
-            headerName: 'Delete',
+            field: 'action',
+            headerName: 'Action',
             width: 100,
             renderCell: (params) => (
-                <IconButton onClick={() => handleDelete(params.row.id)}>
-                <Delete />
-            </IconButton>
+                <>
+                    <IconButton onClick={() => handleEdit(params.row)}>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(params.row)}>
+                        <Delete />
+                    </IconButton>
+                </>
             ),
-          },
+        },
 
     ];
 
@@ -141,7 +179,7 @@ export default function Category() {
                         />
                         <DialogActions>
                             <Button onClick={handleClose}>Cancel</Button>
-                            <Button onClick={handleClickOpen} type="submit">Subscribe</Button>
+                            <Button onClick={handleClickOpen} type="submit">{editing ?'Updat':'Add'}</Button>
                         </DialogActions>
                     </DialogContent>
                 </form>
