@@ -16,12 +16,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import AppleIcon from '@mui/icons-material/Apple';
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 import { NavLink } from 'react-router-dom';
 import CategoryIcon from '@mui/icons-material/Category';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 
 const drawerWidth = 240;
 
@@ -99,6 +98,9 @@ const adminlink=[
     },
     {
       title:"Category", icon:<CategoryIcon />,to:"/admin/category"
+    },
+    {
+      title:"facilities", icon:<HomeRepairServiceIcon />,to:"/admin/facilities"
     }
 ]
 
