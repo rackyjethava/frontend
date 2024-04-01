@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,16 +9,21 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { object, string, number, date, InferType } from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { add_facilities } from '../../../redux/action/facilities.action';
+import { add_facilities, edite_facilities, remove_facalty } from '../../../redux/action/facilities.action';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 function Facilities(props) {
     const [open, setOpen] = React.useState(false);
+    const [editing, setEditing] = useState(null);
 
-    const facilitidatas=useSelector((state)=>state.facilities)
-    console.log(facilitidatas);
 
-    const dispatch=useDispatch()
+    const facilitidatas = useSelector((state) => state.facilities)
+    console.log(facilitidatas.facilities);
+
+    const dispatch = useDispatch()
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -26,6 +31,8 @@ function Facilities(props) {
 
     const handleClose = () => {
         setOpen(false);
+        formik.resetForm();
+        setEditing(null)
     };
 
     let facilitySchema = object({
@@ -37,46 +44,52 @@ function Facilities(props) {
         initialValues: {
             name: '',
             description: '',
+
         },
         validationSchema: facilitySchema,
-        onSubmit: values => {
-            dispatch(add_facilities(values))
+        onSubmit: (values, { resetForm }) => {
+            const rno = Math.floor(Math.random() * 1000)
+
+            dispatch(add_facilities({ ...values, id: rno }))
+
+            resetForm();
+            handleClose();
+
         },
     });
 
     const { handleSubmit, handleChange, handleBlur, values, touched, errors } = formik;
-
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'firstName', headerName: 'First name', width: 130 },
-        { field: 'lastName', headerName: 'Last name', width: 130 },
+        { field: 'name', headerName: 'Facility Name', width: 130 },
+        { field: 'description', headerName: 'Description', width: 200 },
         {
-            field: 'age',
-            headerName: 'Age',
-            type: 'number',
-            width: 90,
-        },
-        {
-            field: 'fullName',
-            headerName: 'Full name',
-            description: 'This column has a value getter and is not sortable.',
-            sortable: false,
-            width: 160,
-
-        },
+            field: 'action',
+            type: 'button',
+            renderCell: (params) => {
+                return <>
+                    <IconButton onClick={() => handleDelete(params.row.id)}>
+                        <DeleteIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleEdit(params.row)}>
+                        <EditIcon />
+                    </IconButton>
+                </>
+            }
+        }
     ];
 
-    const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-        { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-        { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-    ];
+    const handleDelete = (id) => {
+        console.log();
+        dispatch(remove_facalty(id))
+    }
+
+    const handleEdit = (data) => {
+        console.log(data);
+
+        formik.setValues(data)
+        setOpen(true)
+        dispatch(edite_facilities(data))
+    }
 
 
     return (
@@ -122,7 +135,7 @@ function Facilities(props) {
                         />
                         <DialogActions>
                             <Button onClick={handleClose}>Cancel</Button>
-                            <Button type="submit">Subscribe</Button>
+                            <Button type="submit">{editing ? 'Updat' : 'Add'}</Button>
                         </DialogActions>
                     </DialogContent>
                 </form>
@@ -130,7 +143,7 @@ function Facilities(props) {
 
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={rows}
+                    rows={facilitidatas.facilities}
                     columns={columns}
                     initialState={{
                         pagination: {
