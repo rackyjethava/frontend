@@ -13,15 +13,15 @@ import { add_facilities, edite_facilities, remove_facalty } from '../../../redux
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-
+import { Spinner } from 'reactstrap';
 
 function Facilities(props) {
     const [open, setOpen] = React.useState(false);
-    const [editing, setEditing] = useState(null);
-
+    const [editing, setEditing] = useState(false);
+    
 
     const facilitidatas = useSelector((state) => state.facilities)
-    console.log(facilitidatas.facilities);
+    console.log(facilitidatas);
 
     const dispatch = useDispatch()
 
@@ -32,7 +32,7 @@ function Facilities(props) {
     const handleClose = () => {
         setOpen(false);
         formik.resetForm();
-        setEditing(null)
+        setEditing(false)
     };
 
     let facilitySchema = object({
@@ -48,9 +48,14 @@ function Facilities(props) {
         },
         validationSchema: facilitySchema,
         onSubmit: (values, { resetForm }) => {
-            const rno = Math.floor(Math.random() * 1000)
+            if(editing){
+                dispatch(edite_facilities(values))
+            }else{
+                const rno = Math.floor(Math.random() * 1000)
 
-            dispatch(add_facilities({ ...values, id: rno }))
+                dispatch(add_facilities({ ...values, id: rno }))
+            }
+          
 
             resetForm();
             handleClose();
@@ -85,16 +90,25 @@ function Facilities(props) {
 
     const handleEdit = (data) => {
         console.log(data);
-
+      
         formik.setValues(data)
         setOpen(true)
-        dispatch(edite_facilities(data))
+        setEditing(true)
     }
 
 
     return (
+       
         <>
-            <Button variant="outlined" onClick={handleClickOpen}>
+     
+        {
+            facilitidatas.isloading ? 
+                <Spinner>
+
+                </Spinner>:
+         
+            <>
+       <Button variant="outlined" onClick={handleClickOpen}>
                 Facilities  data open
             </Button>
             <Dialog
@@ -155,6 +169,10 @@ function Facilities(props) {
                 />
             </div>
 
+            </>
+        }
+        
+         
         </>
     );
 }

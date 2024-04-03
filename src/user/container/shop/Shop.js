@@ -5,16 +5,18 @@ import { Link } from 'react-router-dom';
 // console.log(fruitdata);
 
 function Shop(props) {
+    const { facilitidatas } = props;
     const [product, setproduct] = useState([])
     const [category, setCategory] = useState([])
     const [types, setTypes] = useState([])
     const [filteredProduct, setFilteredProduct] = useState([]);
+    console.log(facilitidatas);
     const fruitdata = async () => {
         const respnce = await fetch("http://localhost:8000/Fruits");
         const data = await respnce.json();
 
         setproduct(data)
-
+        
 
         const uniqueNames = [...new Set(data.map(item => item.name))];
 
