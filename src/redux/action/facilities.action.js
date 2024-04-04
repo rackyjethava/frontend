@@ -1,9 +1,12 @@
-import { ADD_FACILITIES, DELETE, EDIT, PUSH_FACILITIES_DATA, SET_LOADING } from "../ActionType"
+import { ADD_FACILITIES, DELETE, EDIT,  GET_FACILITIES,  SET_LOADING } from "../ActionType"
 
 const handleloading=()=>(dispatch)=>{
    dispatch({type:SET_LOADING})
 }
 
+ export const get_facilities=()=>(dispatch)=>{
+   dispatch({type:GET_FACILITIES})
+ }
 export const add_facilities = (data) => (dispatch) => {
    dispatch(handleloading())
    setTimeout(()=>[

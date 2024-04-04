@@ -101,6 +101,9 @@ const adminlink=[
     },
     {
       title:"facilities", icon:<HomeRepairServiceIcon />,to:"/admin/facilities"
+    },
+    {
+      title:"products", icon:<AppleIcon />,to:"/admin/products"
     }
 ]
 

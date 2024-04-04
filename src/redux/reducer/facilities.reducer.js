@@ -1,4 +1,4 @@
-import { ADD_FACILITIES, DELETE, EDIT, SET_LOADING } from "../ActionType";
+import { ADD_FACILITIES, DELETE, EDIT, GET_FACILITIES, SET_LOADING } from "../ActionType";
 
 const facilitidata = {
     isloading: false,
@@ -7,14 +7,18 @@ const facilitidata = {
 }
 
 export const facilitiReducer = (state = facilitidata, action) => {
-    console.log(action);
     switch (action.type) {
         case SET_LOADING:
             return {
              ...state,
               isloading:true,
             };
-      
+            
+        case GET_FACILITIES:
+            return{
+                ...state,
+            }
+         
 
         case ADD_FACILITIES:
             return {

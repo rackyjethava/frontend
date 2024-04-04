@@ -14,20 +14,22 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { Spinner } from 'reactstrap';
+import { getproduct } from '../../../redux/action/Product.action';
 
-function Facilities(props) {
+function Products(props) {
     const [open, setOpen] = React.useState(false);
     const [editing, setEditing] = useState(false);
-    
 
-    const facilitidatas = useSelector((state) => state.facilities)
-    console.log(facilitidatas);
-
-    useEffect(()=>{
-        dispatch(get_facilities())
-    },[])
+    const fruitdata=useSelector((state)=>state.products)
+    console.log(fruitdata);
 
     const dispatch = useDispatch()
+
+    useEffect((values) => {
+        dispatch(getproduct(values))
+    }, [])
+
+   
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -41,25 +43,19 @@ function Facilities(props) {
 
     let facilitySchema = object({
         name: string().required(),
-        description: string().required()
+        description: string().required(),
+        price: number().required()
     });
 
     const formik = useFormik({
         initialValues: {
             name: '',
             description: '',
-
+            price: ''
         },
         validationSchema: facilitySchema,
         onSubmit: (values, { resetForm }) => {
-            if(editing){
-                dispatch(edite_facilities(values))
-            }else{
-                const rno = Math.floor(Math.random() * 1000)
-
-                dispatch(add_facilities({ ...values, id: rno }))
-            }
-          
+            
 
             resetForm();
             handleClose();
@@ -94,7 +90,7 @@ function Facilities(props) {
 
     const handleEdit = (data) => {
         console.log(data);
-      
+
         formik.setValues(data)
         setOpen(true)
         setEditing(true)
@@ -102,18 +98,12 @@ function Facilities(props) {
 
 
     return (
-       
-        <>
-     
-        {
-            facilitidatas.isloading ? 
-                <Spinner>
 
-                </Spinner>:
-         
-            <>
-       <Button variant="outlined" onClick={handleClickOpen}>
-                Facilities  data open
+        <>
+
+
+            <Button variant="outlined" onClick={handleClickOpen}>
+                Product  data open
             </Button>
             <Dialog
                 open={open}
@@ -150,6 +140,19 @@ function Facilities(props) {
                             value={values.description}
                             error={touched.description && errors.description ? errors.description : false}
                             helperText={touched.description && errors.description ? errors.description : ""}
+                        /><TextField
+                            margin="dense"
+                            id="price"
+                            name="price"
+                            label="price"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.price}
+                            error={touched.price && errors.price ? errors.price : false}
+                            helperText={touched.price && errors.price ? errors.price : ""}
                         />
                         <DialogActions>
                             <Button onClick={handleClose}>Cancel</Button>
@@ -160,7 +163,7 @@ function Facilities(props) {
             </Dialog>
 
             <div style={{ height: 400, width: '100%' }}>
-                <DataGrid
+                {/* <DataGrid
                     rows={facilitidatas.facilities}
                     columns={columns}
                     initialState={{
@@ -170,15 +173,14 @@ function Facilities(props) {
                     }}
                     pageSizeOptions={[5, 10]}
                     checkboxSelection
-                />
+                /> */}
             </div>
 
-            </>
-        }
-        
-         
+
+
+
         </>
     );
 }
 
-export default Facilities;
+export default Products;
