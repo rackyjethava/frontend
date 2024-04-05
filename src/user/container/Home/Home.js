@@ -112,9 +112,7 @@ function Home(props) {
                     </div>
                 </div>
             </div>
-            <Button variant="text">Text</Button>
-            <Button variant="contained">Contained</Button>
-            <Button variant="outlined">Outlined</Button><Button variant="contained">Contained</Button>
+
             {/* Hero End */}
             {/* Featurs Section Start */}
             <div className="container-fluid featurs py-5">

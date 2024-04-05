@@ -14,22 +14,22 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { Spinner } from 'reactstrap';
-import { getproduct } from '../../../redux/action/Product.action';
+import { addproduct, deletproduct, getproduct } from '../../../redux/action/Product.action';
 
 function Products(props) {
     const [open, setOpen] = React.useState(false);
     const [editing, setEditing] = useState(false);
 
-    const fruitdata=useSelector((state)=>state.products)
-    console.log(fruitdata);
 
     const dispatch = useDispatch()
 
-    useEffect((values) => {
-        dispatch(getproduct(values))
+    useEffect(() => {
+        dispatch(getproduct())
     }, [])
 
    
+    const products=useSelector((state)=>state.products)
+    // console.log(products);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -55,7 +55,11 @@ function Products(props) {
         },
         validationSchema: facilitySchema,
         onSubmit: (values, { resetForm }) => {
-            
+            if (editing) {
+                
+            }else{
+                dispatch(addproduct(values))
+            }
 
             resetForm();
             handleClose();
@@ -67,6 +71,7 @@ function Products(props) {
     const columns = [
         { field: 'name', headerName: 'Facility Name', width: 130 },
         { field: 'description', headerName: 'Description', width: 200 },
+        { field: 'price', headerName: 'price', width: 200 },
         {
             field: 'action',
             type: 'button',
@@ -85,7 +90,7 @@ function Products(props) {
 
     const handleDelete = (id) => {
         console.log();
-        dispatch(remove_facalty(id))
+        dispatch(deletproduct(id))
     }
 
     const handleEdit = (data) => {
@@ -145,7 +150,7 @@ function Products(props) {
                             id="price"
                             name="price"
                             label="price"
-                            type="text"
+                            type="number"
                             fullWidth
                             variant="standard"
                             onChange={handleChange}
@@ -163,8 +168,8 @@ function Products(props) {
             </Dialog>
 
             <div style={{ height: 400, width: '100%' }}>
-                {/* <DataGrid
-                    rows={facilitidatas.facilities}
+                <DataGrid
+                    rows={products.products }
                     columns={columns}
                     initialState={{
                         pagination: {
@@ -173,7 +178,7 @@ function Products(props) {
                     }}
                     pageSizeOptions={[5, 10]}
                     checkboxSelection
-                /> */}
+                /> 
             </div>
 
 

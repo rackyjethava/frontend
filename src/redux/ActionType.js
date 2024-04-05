@@ -1,7 +1,10 @@
 export const ADD_FACILITIES='ADD_FACILITIES'
-
 export const DELETE='DELETE'
 export const EDIT='EDIT'
 export const SET_LOADING='SET_LOADING'
 export const GET_FACILITIES='GET_FACILITIES'
 export const GET_PRODUCT='GET_PRODUCT'
+
+export const ADD_PRODUCT='ADD_PRODUCT'
+export const DELETE_PRODUCT='DELETE_PRODUCT'
+export const EDIT_PRODUCT='EDIT_PRODUCT'

@@ -1,13 +1,14 @@
 import { BATCH_URL } from "../../utilitis/Utiliti";
-import { GET_PRODUCT } from "../ActionType"
+import { ADD_PRODUCT, DELETE_PRODUCT, GET_PRODUCT } from "../ActionType"
 import axios from 'axios';
 
- export const getproduct=(data)=>(dispatch)=>{
+ export const getproduct=()=>async(dispatch)=>{
   
    try {
-      axios.get(BATCH_URL+'Fruits')
+     await axios.get(BATCH_URL+'Fruits')
       .then((responce)=>{
-       console.log(responce.data);
+         dispatch({type:GET_PRODUCT,payload:responce.data})
+ 
       })
       .catch((error)=>{
          console.log(error);
@@ -16,6 +17,25 @@ import axios from 'axios';
    } catch (error) {
       
    }
-   dispatch({type:GET_PRODUCT,payload:data})
- 
+   
+ }
+
+ export const addproduct=(data)=>async(dispatch)=>{
+   try {
+      await axios.post(BATCH_URL+'Fruits',data)
+      .then((responce)=>dispatch({type:ADD_PRODUCT,payload:responce.data}) )
+      .catch((error)=>console.log(error))
+   } catch (error) {
+      
+   }
+ }
+
+ export const deletproduct=(id)=>async(dispatch)=>{
+   try {
+      await axios.delete(BATCH_URL+'Fruits/'+id)
+      .then((responce)=>dispatch({type:DELETE_PRODUCT,payload:id}) )
+      .catch((error)=>console.log(error))
+   } catch (error) {
+      
+   }
  }
