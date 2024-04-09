@@ -7,7 +7,7 @@
       "category": "Fruits",
       "name": "Grapes",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Expired"
     },
     {
@@ -17,7 +17,7 @@
       "category": "Fruits",
       "name": "Grapes",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Organic"
     },
     {
@@ -27,7 +27,7 @@
       "category": "Fruits",
       "name": "Raspberries",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Discount"
     },
     {
@@ -37,7 +37,7 @@
       "category": "Fruits",
       "name": "Apricots",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Organic"
     },
     {
@@ -47,7 +47,7 @@
       "category": "Fruits",
       "name": "Banana",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Sales"
     },
     {
@@ -57,7 +57,7 @@
       "category": "Fruits",
       "name": "Oranges",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Fresh"
     },
     {
@@ -67,7 +67,7 @@
       "category": "Fruits",
       "name": "Raspberries",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Discount"
     },
     {
@@ -77,7 +77,7 @@
       "category": "Fruits",
       "name": "Grapes",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Organic"
     },
     {
@@ -87,20 +87,35 @@
       "category": "Fruits",
       "name": "Oranges",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
-      "price": "$4.99 / kg",
+      "price": "4.99",
       "type": "Fresh"
     },
     {
       "id": "2741",
       "name": "mango",
       "description": "keser kari",
-      "price": "1000"
+      "price": 500
     },
     {
       "id": "6d32",
       "name": "banana",
       "description": "banana is very nice",
-      "price": "2222"
+      "price": 1000
+    },
+    {
+      "id": "c3b5",
+      "name": "lichi",
+      "description": "lichi si very nice and delicious fruit",
+      "price": 800
+    },
+    {
+      "id": "a086",
+      "name": "sitafal",
+      "description": "sedfsdfgdrg",
+      "price": 400
     }
+  ],
+  "Reviews":[
+    
   ]
 }

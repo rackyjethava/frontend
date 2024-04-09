@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { Spinner } from 'reactstrap';
-import { addproduct, deletproduct, getproduct } from '../../../redux/action/Product.action';
+import { addproduct, deletproduct, editeProduct, getproduct } from '../../../redux/action/Product.action';
 
 function Products(props) {
     const [open, setOpen] = React.useState(false);
@@ -27,8 +27,8 @@ function Products(props) {
         dispatch(getproduct())
     }, [])
 
-   
-    const products=useSelector((state)=>state.products)
+
+    const products = useSelector((state) => state.products)
     // console.log(products);
 
     const handleClickOpen = () => {
@@ -56,8 +56,8 @@ function Products(props) {
         validationSchema: facilitySchema,
         onSubmit: (values, { resetForm }) => {
             if (editing) {
-                
-            }else{
+                dispatch(editeProduct(values))
+            } else {
                 dispatch(addproduct(values))
             }
 
@@ -71,7 +71,7 @@ function Products(props) {
     const columns = [
         { field: 'name', headerName: 'Facility Name', width: 130 },
         { field: 'description', headerName: 'Description', width: 200 },
-        { field: 'price', headerName: 'price', width: 200 },
+        { field: 'price', headerName: 'price $', width: 200 },
         {
             field: 'action',
             type: 'button',
@@ -105,83 +105,85 @@ function Products(props) {
     return (
 
         <>
+            {
+                products.isloading ? <p>loading....</p> :
+                products.error?<p>{products.error}</p>:
+                    <>
+                        <Button variant="outlined" onClick={handleClickOpen}>
+                            Product  data open
+                        </Button>
+                        <Dialog
+                            open={open}
+                            onClose={handleClose}
 
+                        >
+                            <DialogTitle>Facilities  Data</DialogTitle>
+                            <form onSubmit={handleSubmit}>
+                                <DialogContent>
+                                    <TextField
+                                        margin="dense"
+                                        id="name"
+                                        name="name"
+                                        label="Facilities name"
+                                        type="text"
+                                        fullWidth
+                                        variant="standard"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.name}
+                                        error={touched.name && errors.name ? errors.name : false}
+                                        helperText={touched.name && errors.name ? errors.name : ""}
+                                    />
+                                    <TextField
+                                        margin="dense"
+                                        id="description"
+                                        name="description"
+                                        label="description"
+                                        type="text"
+                                        fullWidth
+                                        variant="standard"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.description}
+                                        error={touched.description && errors.description ? errors.description : false}
+                                        helperText={touched.description && errors.description ? errors.description : ""}
+                                    /><TextField
+                                        margin="dense"
+                                        id="price"
+                                        name="price"
+                                        label="price"
+                                        type="number"
+                                        fullWidth
+                                        variant="standard"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.price}
+                                        error={touched.price && errors.price ? errors.price : false}
+                                        helperText={touched.price && errors.price ? errors.price : ""}
+                                    />
+                                    <DialogActions>
+                                        <Button onClick={handleClose}>Cancel</Button>
+                                        <Button type="submit">{editing ? 'Updat' : 'Add'}</Button>
+                                    </DialogActions>
+                                </DialogContent>
+                            </form>
+                        </Dialog>
 
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Product  data open
-            </Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-
-            >
-                <DialogTitle>Facilities  Data</DialogTitle>
-                <form onSubmit={handleSubmit}>
-                    <DialogContent>
-                        <TextField
-                            margin="dense"
-                            id="name"
-                            name="name"
-                            label="Facilities name"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.name}
-                            error={touched.name && errors.name ? errors.name : false}
-                            helperText={touched.name && errors.name ? errors.name : ""}
-                        />
-                        <TextField
-                            margin="dense"
-                            id="description"
-                            name="description"
-                            label="description"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.description}
-                            error={touched.description && errors.description ? errors.description : false}
-                            helperText={touched.description && errors.description ? errors.description : ""}
-                        /><TextField
-                            margin="dense"
-                            id="price"
-                            name="price"
-                            label="price"
-                            type="number"
-                            fullWidth
-                            variant="standard"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.price}
-                            error={touched.price && errors.price ? errors.price : false}
-                            helperText={touched.price && errors.price ? errors.price : ""}
-                        />
-                        <DialogActions>
-                            <Button onClick={handleClose}>Cancel</Button>
-                            <Button type="submit">{editing ? 'Updat' : 'Add'}</Button>
-                        </DialogActions>
-                    </DialogContent>
-                </form>
-            </Dialog>
-
-            <div style={{ height: 400, width: '100%' }}>
-                <DataGrid
-                    rows={products.products }
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: { page: 0, pageSize: 5 },
-                        },
-                    }}
-                    pageSizeOptions={[5, 10]}
-                    checkboxSelection
-                /> 
-            </div>
-
-
+                        <div style={{ height: 400, width: '100%' }}>
+                            <DataGrid
+                                rows={products.products}
+                                columns={columns}
+                                initialState={{
+                                    pagination: {
+                                        paginationModel: { page: 0, pageSize: 5 },
+                                    },
+                                }}
+                                pageSizeOptions={[5, 10]}
+                                checkboxSelection
+                            />
+                        </div>
+                    </>
+            }
 
 
         </>

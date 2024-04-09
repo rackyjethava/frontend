@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
 
 function Shop_detail(props) {
-    
+
     const [product, setproduct] = useState({})
     const { id } = useParams();
     const fruitdata = async () => {
         const respnce = await fetch("http://localhost:8000/Fruits");
         const data = await respnce.json();
 
-        const findData=data.find((item)=> item.id==id);
-       
+        const findData = data.find((item) => item.id == id);
+
 
         setproduct(findData)
         console.log(data);
     }
-    
+
 
     useEffect(() => {
         fruitdata();
@@ -61,7 +63,7 @@ function Shop_detail(props) {
                                 <div className="col-lg-6">
                                     <div className="border rounded">
                                         <a href="#">
-                                            
+
                                             <img src={`../${product?.imgSrc}`} className="img-fluid rounded" alt="Image" />
                                         </a>
                                     </div>
@@ -223,11 +225,14 @@ function Shop_detail(props) {
                                                 <div className="d-flex align-items-center">
                                                     <p className="mb-0 me-3">Please rate:</p>
                                                     <div className="d-flex align-items-center" style={{ fontSize: 12 }}>
-                                                        <i className="fa fa-star text-muted" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
-                                                        <i className="fa fa-star" />
+                                                        <Typography component="legend">Controlled</Typography>
+                                                        <Rating
+                                                            name="simple-controlled"
+                                                            value={value}
+                                                            onChange={(event, newValue) => {
+                                                                setValue(newValue);
+                                                            }}
+                                                        />
                                                     </div>
                                                 </div>
                                                 <a href="#" className="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post Comment</a>
