@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
+import Review from '../review/Review';
 
 function Shop_detail(props) {
-
     const [product, setproduct] = useState({})
     const { id } = useParams();
+
     const fruitdata = async () => {
         const respnce = await fetch("http://localhost:8000/Fruits");
         const data = await respnce.json();
@@ -22,6 +21,7 @@ function Shop_detail(props) {
     useEffect(() => {
         fruitdata();
     }, [])
+
 
 
     return (
@@ -202,44 +202,9 @@ function Shop_detail(props) {
                                         </div>
                                     </div>
                                 </div>
-                                <form action="#">
-                                    <h4 className="mb-5 fw-bold">Leave a Reply</h4>
-                                    <div className="row g-4">
-                                        <div className="col-lg-6">
-                                            <div className="border-bottom rounded">
-                                                <input type="text" className="form-control border-0 me-4" placeholder="Yur Name *" />
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-6">
-                                            <div className="border-bottom rounded">
-                                                <input type="email" className="form-control border-0" placeholder="Your Email *" />
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-12">
-                                            <div className="border-bottom rounded my-4">
-                                                <textarea name id className="form-control border-0" cols={30} rows={8} placeholder="Your Review *" spellCheck="false" defaultValue={""} />
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-12">
-                                            <div className="d-flex justify-content-between py-3 mb-5">
-                                                <div className="d-flex align-items-center">
-                                                    <p className="mb-0 me-3">Please rate:</p>
-                                                    <div className="d-flex align-items-center" style={{ fontSize: 12 }}>
-                                                        <Typography component="legend">Controlled</Typography>
-                                                        <Rating
-                                                            name="simple-controlled"
-                                                            value={value}
-                                                            onChange={(event, newValue) => {
-                                                                setValue(newValue);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <a href="#" className="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post Comment</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                <>
+                                <Review />
+                                </>
                             </div>
                         </div>
                         <div className="col-lg-4 col-xl-3">
