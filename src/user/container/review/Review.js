@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { object, string, number, date, InferType } from 'yup';
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
+import { addreviews, getreview } from '../../../redux/action/Review.action';
 
 function Review(props) {
-   
 
+    const reviewdata = useSelector(state => state.review);
+    console.log(reviewdata);
+
+    useEffect(() => {
+        dispatch(getreview())
+    }, [])
+
+    const dispatch = useDispatch();
     let userSchema = object({
         name: string().required(),
         email: string().email(),
@@ -27,8 +36,10 @@ function Review(props) {
             rating: ''
         },
         validationSchema: userSchema,
-        onSubmit: values => {
+        onSubmit: (values, { resetForm }) => {
+            dispatch(addreviews(values));
             console.log(values);
+            resetForm();
         },
     });
 
@@ -103,25 +114,25 @@ function Review(props) {
                             <div className="d-flex align-items-center">
                                 <p className="mb-0 me-3">Please rate:</p>
                                 <div className="d-flex align-items-center" style={{ fontSize: 12 }}>
-                                <Stack spacing={1}>
-                                    <Rating
-                                      defaultValue={0}
-                                      precision={0.5}
-                                      id="rating"
-                                      name="rating"
-                                      value={values.rating}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      error={
-                                        errors.rating && touched.rating ? true : false
-                                      }
-                                      helperText={
-                                        errors.rating && touched.rating
-                                          ? errors.rating
-                                          : ""
-                                      }
-                                    />
-                                  </Stack>
+                                    <Stack spacing={1}>
+                                        <Rating
+                                            defaultValue={0}
+                                            precision={0.5}
+                                            id="rating"
+                                            name="rating"
+                                            value={values.rating}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={
+                                                errors.rating && touched.rating ? true : false
+                                            }
+                                            helperText={
+                                                errors.rating && touched.rating
+                                                    ? errors.rating
+                                                    : ""
+                                            }
+                                        />
+                                    </Stack>
                                 </div>
                             </div>
                             <Button
@@ -131,11 +142,34 @@ function Review(props) {
                                 Post Comment
                             </Button>
 
-                            {/* <input type='submit' className="btn border border-secondary text-primary rounded-pill px-4 py-3" placeholder="Post Comment"/> */}
+
                         </div>
                     </div>
                 </div>
             </form>
+            <div>
+                    {
+                        reviewdata.review.map((v,index) => (
+                                <div className="d-flex">
+                                    <img src="img/avatar.jpg" className="img-fluid rounded-circle p-3" style={{ width: 100, height: 100 }} alt />
+                                    <div className>
+                                        <p className="mb-2" style={{ fontSize: 14 }}>April 12, 2024</p>
+                                        <div className="d-flex justify-content-between">
+                                            <h5>{v.name}</h5>
+                                            <div className="d-flex mb-3">
+                                                <i className="fa fa-star text-secondary" />
+                                                <i className="fa fa-star text-secondary" />
+                                                <i className="fa fa-star text-secondary" />
+                                                <i className="fa fa-star text-secondary" />
+                                                <i className="fa fa-star" />
+                                            </div>
+                                        </div>
+                                        <p>{v.review}</p>
+                                    </div>
+                                </div>
+                        ))
+                    }
+            </div>
         </div>
     );
 }

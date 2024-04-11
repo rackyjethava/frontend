@@ -115,7 +115,48 @@
       "price": 400
     }
   ],
-  "Reviews":[
-    
+  "Reviews": [
+    {
+      "id": "93f0",
+      "name": "jethava piyush",
+      "email": "piyushjethava247@gmail.com",
+      "review": "asdasd",
+      "rating": "4"
+    },
+    {
+      "id": "1572",
+      "name": "rakesh",
+      "email": "rakesh@gmail.com",
+      "review": "asdfasdf",
+      "rating": "2.5"
+    },
+    {
+      "id": "b175",
+      "name": "ajay",
+      "email": "ajay@gmail.com",
+      "review": "ssdsf",
+      "rating": "4"
+    },
+    {
+      "id": "f82e",
+      "name": "safsdfg",
+      "email": "afsdsdf@gmail.com",
+      "review": "asdfcsdfgs",
+      "rating": "5"
+    },
+    {
+      "id": "2ea8",
+      "name": "safsdfg",
+      "email": "afsdsdf@gmail.com",
+      "review": "asdfcsdfgs",
+      "rating": "5"
+    },
+    {
+      "id": "ad73",
+      "name": "jethava piyush",
+      "email": "piyushjethava247@gmail.com",
+      "review": "asdasd",
+      "rating": "5"
+    }
   ]
 }

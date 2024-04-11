@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Review from '../review/Review';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Shop_detail(props) {
     const [product, setproduct] = useState({})
     const { id } = useParams();
+
+
 
     const fruitdata = async () => {
         const respnce = await fetch("http://localhost:8000/Fruits");
