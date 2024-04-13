@@ -8,7 +8,6 @@ const facilitidata = {
 
 
 export const productReducer=(state=facilitidata,action)=>{
-    console.log(action);
     switch (action.type) {
         case LOADING_PRODUCT:
             return{

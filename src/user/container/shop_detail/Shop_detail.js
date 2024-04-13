@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Review from '../review/Review';
 import { useDispatch, useSelector } from 'react-redux';
+import { addtocart } from '../../../redux/action/Cart.action';
 
 function Shop_detail(props) {
     const [product, setproduct] = useState({})
     const { id } = useParams();
 
-
+    const dispatch=useDispatch()
 
     const fruitdata = async () => {
         const respnce = await fetch("http://localhost:8000/Fruits");
@@ -25,7 +26,10 @@ function Shop_detail(props) {
         fruitdata();
     }, [])
 
-
+const addToCart=(data)=>{
+    console.log(data);
+    dispatch(addtocart(data))
+}
 
     return (
         <div>
@@ -97,7 +101,9 @@ function Shop_detail(props) {
                                             </button>
                                         </div>
                                     </div>
-                                    <a href="#" className="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
+                                   
+                                    <button className="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
+                                     onClick={() => addToCart(product)}>Add to Cart</button>
                                 </div>
                                 <div className="col-lg-12">
                                     <nav>

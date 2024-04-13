@@ -158,5 +158,57 @@
       "review": "asdasd",
       "rating": "5"
     }
+  ],
+  "cart": [
+    {
+      "id": "3",
+      "title": "Fresh Fruits",
+      "imgSrc": "img/fruite-item-2.jpg",
+      "category": "Fruits",
+      "name": "Raspberries",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
+      "price": "4.99",
+      "type": "Discount"
+    },
+    {
+      "id": "3",
+      "title": "Fresh Fruits",
+      "imgSrc": "img/fruite-item-2.jpg",
+      "category": "Fruits",
+      "name": "Raspberries",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
+      "price": "4.99",
+      "type": "Discount"
+    },
+    {
+      "id": "6",
+      "title": "Fresh Fruits",
+      "imgSrc": "img/fruite-item-1.jpg",
+      "category": "Fruits",
+      "name": "Oranges",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
+      "price": "4.99",
+      "type": "Fresh"
+    },
+    {
+      "id": "8",
+      "title": "Fresh Fruits",
+      "imgSrc": "img/fruite-item-5.jpg",
+      "category": "Fruits",
+      "name": "Grapes",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
+      "price": "4.99",
+      "type": "Organic"
+    },
+    {
+      "id": "4",
+      "title": "Fresh Fruits",
+      "imgSrc": "img/fruite-item-4.jpg",
+      "category": "Fruits",
+      "name": "Apricots",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
+      "price": "4.99",
+      "type": "Organic"
+    }
   ]
 }

@@ -13,8 +13,8 @@ import { addreviews, getreview } from '../../../redux/action/Review.action';
 function Review(props) {
 
     const reviewdata = useSelector(state => state.review);
-    console.log(reviewdata);
-
+   
+    
     useEffect(() => {
         dispatch(getreview())
     }, [])
@@ -38,7 +38,7 @@ function Review(props) {
         validationSchema: userSchema,
         onSubmit: (values, { resetForm }) => {
             dispatch(addreviews(values));
-            console.log(values);
+
             resetForm();
         },
     });
