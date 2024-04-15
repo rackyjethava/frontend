@@ -3,11 +3,13 @@ import { facilitiReducer } from "./facilities.reducer";
 import { productReducer } from "./Product.reducer";
 import { reviewReducer } from "./Review.reducer";
 import { cartReducer } from "./Cart.reducer";
+import counterSlice from "./counter.slice";
 
  export const  rootreducer=combineReducers({
     facilities:facilitiReducer,
     products:productReducer,
    review:reviewReducer,
    cart:cartReducer,
+   counter:counterSlice,
  })
 

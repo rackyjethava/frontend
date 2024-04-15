@@ -94,7 +94,7 @@ const adminlink=[
         title:"Fruits" ,icon:<AppleIcon /> ,to:"/admin/fruits"
     },
     {
-        title:"Vagitable" ,icon:<BakeryDiningIcon /> ,to:"/admin/vagitable"
+        title:"Vagitable" ,icon:<BakeryDiningIcon /> ,to:"/admin/counter"
     },
     {
       title:"Category", icon:<CategoryIcon />,to:"/admin/category"
