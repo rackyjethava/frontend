@@ -209,6 +209,36 @@
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
       "price": "4.99",
       "type": "Organic"
+    },
+    {
+      "id": "3",
+      "title": "Fresh Fruits",
+      "imgSrc": "img/fruite-item-2.jpg",
+      "category": "Fruits",
+      "name": "Raspberries",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
+      "price": "4.99",
+      "type": "Discount"
+    },
+    {
+      "id": "5",
+      "title": "Fresh Fruits",
+      "imgSrc": "img/fruite-item-3.jpg",
+      "category": "Fruits",
+      "name": "Banana",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
+      "price": "4.99",
+      "type": "Sales"
+    },
+    {
+      "id": "5",
+      "title": "Fresh Fruits",
+      "imgSrc": "img/fruite-item-3.jpg",
+      "category": "Fruits",
+      "name": "Banana",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt",
+      "price": "4.99",
+      "type": "Sales"
     }
   ]
 }

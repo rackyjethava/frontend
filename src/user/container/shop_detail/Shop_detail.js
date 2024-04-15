@@ -3,9 +3,10 @@ import { useParams } from 'react-router-dom';
 import Review from '../review/Review';
 import { useDispatch, useSelector } from 'react-redux';
 import { addtocart } from '../../../redux/action/Cart.action';
+import { addtoocart } from '../../../redux/slice/cart.slice';
 
 function Shop_detail(props) {
-    const [product, setproduct] = useState({})
+    const [product, setproduct] = useState([])
     const { id } = useParams();
 
     const dispatch=useDispatch()
@@ -26,9 +27,9 @@ function Shop_detail(props) {
         fruitdata();
     }, [])
 
-const addToCart=(data)=>{
-    console.log(data);
-    dispatch(addtocart(data))
+const addToCart=(product)=>{
+    console.log(product);
+    dispatch(addtoocart(product))
 }
 
     return (
@@ -103,7 +104,7 @@ const addToCart=(data)=>{
                                     </div>
                                    
                                     <button className="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
-                                     onClick={() => addToCart(product)}>Add to Cart</button>
+                                     onClick={addToCart}>Add to Cart</button>
                                 </div>
                                 <div className="col-lg-12">
                                     <nav>

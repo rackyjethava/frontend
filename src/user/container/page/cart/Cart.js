@@ -4,8 +4,10 @@ import { addtocart, getcart } from '../../../../redux/action/Cart.action';
 
 function Cart(props) {
 
-    const cartdata=useSelector(state=>state.cart)
+    const cartdata=useSelector(state=>state.cart_slice)
     console.log(cartdata);
+
+    
 
     useEffect(() => {
         dispatch(getcart())
