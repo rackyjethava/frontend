@@ -7,7 +7,7 @@ const intilize={
 }
 
 export const reviewReducer=(state=intilize,action)=>{
-    console.log(action);
+    // console.log(action);
     switch (action.type) {
         case ADD_REVIEW:
             return{

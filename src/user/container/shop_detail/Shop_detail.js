@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Review from '../review/Review';
 import { useDispatch, useSelector } from 'react-redux';
-import { addtocart } from '../../../redux/action/Cart.action';
-import { addtoocart } from '../../../redux/slice/cart.slice';
+import { addToCart } from '../../../redux/reducer/cart.slice';
 
 function Shop_detail(props) {
     const [product, setproduct] = useState([])
     const { id } = useParams();
+
+    const cart=useSelector(state=>state.cart_slice)
+    console.log(cart);
 
     const dispatch=useDispatch()
 
@@ -19,7 +21,7 @@ function Shop_detail(props) {
 
 
         setproduct(findData)
-        console.log(data);
+        // console.log(data);
     }
 
 
@@ -27,10 +29,11 @@ function Shop_detail(props) {
         fruitdata();
     }, [])
 
-const addToCart=(product)=>{
-    console.log(product);
-    dispatch(addtoocart(product))
-}
+    const handleAddToCart=()=>{
+        dispatch(addToCart(id))
+    }
+
+
 
     return (
         <div>
@@ -104,7 +107,7 @@ const addToCart=(product)=>{
                                     </div>
                                    
                                     <button className="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"
-                                     onClick={addToCart}>Add to Cart</button>
+                                   onClick={handleAddToCart}>Add to Cart</button>
                                 </div>
                                 <div className="col-lg-12">
                                     <nav>

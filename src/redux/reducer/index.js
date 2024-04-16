@@ -2,16 +2,15 @@ import { combineReducers } from "redux";
 import { facilitiReducer } from "./facilities.reducer";
 import { productReducer } from "./Product.reducer";
 import { reviewReducer } from "./Review.reducer";
-import { cartReducer } from "./Cart.reducer";
 import counterSlice from "./counter.slice";
-import cartSlice from "../slice/cart.slice";
+import cartSlice from "./cart.slice";
+
 
  export const  rootreducer=combineReducers({
     facilities:facilitiReducer,
     products:productReducer,
    review:reviewReducer,
-   cart:cartReducer,
    counter:counterSlice,
-   cart_slice:cartSlice
+   cart_slice:cartSlice,
  })
 
