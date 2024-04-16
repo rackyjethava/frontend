@@ -15,7 +15,7 @@ const initialState={
             console.log(action);
 
             const index=state.cart.findIndex((v)=>v.pid===action.payload)
-
+      
             if(index !== -1){
                 
 

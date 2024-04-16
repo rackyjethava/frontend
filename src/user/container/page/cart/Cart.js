@@ -4,16 +4,6 @@ import { addtocart, getcart } from '../../../../redux/action/Cart.action';
 
 function Cart(props) {
 
-    const cartdata=useSelector(state=>state.cart_slice)
-    console.log(cartdata);
-
-    
-
-    useEffect(() => {
-        dispatch(getcart())
-    }, [])
-
-    const dispatch=useDispatch()
     return (
         <div>
             {/* Modal Search Start */}
@@ -60,19 +50,18 @@ function Cart(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
-                                    cartdata.cart.map((v,index)=>(
+                            
                                         <tr>
                                     <th scope="row">
                                         <div className="d-flex align-items-center">
-                                            <img src={v.imgSrc} className="img-fluid me-5 rounded-circle" style={{ width: 80, height: 80 }} alt />
+                                            <img  className="img-fluid me-5 rounded-circle" style={{ width: 80, height: 80 }} alt />
                                         </div>
                                     </th>
                                     <td>
-                                        <p className="mb-0 mt-4">{v.name}</p>
+                                        <p className="mb-0 mt-4"></p>
                                     </td>
                                     <td>
-                                        <p className="mb-0 mt-4">{v.price}</p>
+                                        <p className="mb-0 mt-4"></p>
                                     </td>
                                     <td>
                                         <div className="input-group quantity mt-4" style={{ width: 100 }}>
@@ -98,9 +87,8 @@ function Cart(props) {
                                         </button>
                                     </td>
                                 </tr>
-                                    ))
-                                }
-                                
+                              
+                        
                                
                             </tbody>
                         </table>

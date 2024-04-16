@@ -1,7 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 function Header(props) {
+    const cart=useSelector(state=>state.cart_slice)
+    console.log(cart);
+    const totalQty = cart.cart.reduce((acc, curr) => acc + curr.qty, 0);
+            console.log(totalQty);
+
     return (
         <div>
             {/* Spinner Start */}
@@ -50,15 +56,15 @@ function Header(props) {
 
                                 <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i className="fas fa-search text-primary" /></button>
 
-                                <a href="#" className="position-relative me-4 my-auto">
+                                <NavLink to="/cart" className="position-relative me-4 my-auto">
 
-                                    <NavLink to="/cart" className="fa fa-shopping-bag fa-2x" />
+                                    <i className="fa fa-shopping-bag fa-2x" />
 
                                     <span
                                         className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                                        style={{ top: '-5px', left: 15, height: 20, minWidth: 20 }}>3
+                                        style={{ top: '-5px', left: 15, height: 20, minWidth: 20 }}>{totalQty}
                                     </span>
-                                </a>
+                                </NavLink>
 
                                 <NavLink to="/login" className="my-auto">
                                     <i className="fas fa-user fa-2x" />
