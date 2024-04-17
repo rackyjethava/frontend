@@ -27,18 +27,27 @@ const initialState={
             
         },
 
-        incrementCart:()=>{
-
+        incrementCart:(state,action)=>{
+            console.log(action);
+            const index=state.cart.findIndex((v)=>v.pid===action.payload)
+            if(index !== -1){
+                state.cart[index].qty++;
+            }
+            
         },
-        //  removeFromCart:(state,action)=
-        //  {  let pid = action.payload;
-        //    return state.cart = state.cart
-        //    .filter((item)=>(item.pid!==pid))
-        //  },
+
+        decrementCart:(state,action)=>{
+            console.log(action);
+            const index=state.cart.findIndex((v)=>v.pid===action.payload)
+            if(index !== -1){
+                state.cart[index].qty--;
+            }
+        }
+       
 
          
     }
 })
 
-export const {addToCart}=cartSlice.actions;
+export const {addToCart,incrementCart,decrementCart}=cartSlice.actions;
 export default cartSlice.reducer;
