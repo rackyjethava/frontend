@@ -25,7 +25,18 @@ const initialState={
             }
 
             
-        }
+        },
+
+        incrementCart:()=>{
+
+        },
+        //  removeFromCart:(state,action)=
+        //  {  let pid = action.payload;
+        //    return state.cart = state.cart
+        //    .filter((item)=>(item.pid!==pid))
+        //  },
+
+         
     }
 })
 

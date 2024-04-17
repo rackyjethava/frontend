@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { addToCart } from '../../../redux/reducer/cart.slice';
+import { getproduct } from '../../../redux/action/Product.action';
 
 
 // console.log(fruitdata);
@@ -10,23 +13,11 @@ function Shop(props) {
     const [category, setCategory] = useState([])
     const [types, setTypes] = useState([])
     const [filteredProduct, setFilteredProduct] = useState([]);
+    const { id } = useParams();
+
     console.log(facilitidatas);
-    const fruitdata = async () => {
-        const respnce = await fetch("http://localhost:8000/Fruits");
-        const data = await respnce.json();
 
-        setproduct(data)
-        
-
-        const uniqueNames = [...new Set(data.map(item => item.name))];
-
-        const uniqType = [...new Set(data.map(item => item.type))];
-        setTypes(uniqType)
-
-        setCategory(uniqueNames)
-
-        // console.log(data);
-    }
+    const dispatch=useDispatch()
 
     const handleFilter = (serch) => {
         let fdata = product.filter((v) => {
@@ -44,12 +35,18 @@ function Shop(props) {
         }
       };
       
+      const handleAddToCart=()=>{
+        dispatch(addToCart(id))
+    }
 
     // console.log(filteredProduct);
 
     useEffect(() => {
-        fruitdata();
+       dispatch(getproduct())
     }, [])
+
+    const prouduct=useSelector(state=>state.products)
+    console.log(prouduct);
 
 
     return (
@@ -229,7 +226,7 @@ function Shop(props) {
                                 <div className="col-lg-9">
                                     <div className="row g-4 justify-content-center">
                                         {
-                                            filteredProduct.map((v) => (
+                                            prouduct.products.map((v) => (
                                                 <div className="col-md-6 col-lg-6 col-xl-4">
                                                     <Link to={`/shop/${v.id}`}>
                                                         <div className="rounded position-relative fruite-item">
@@ -242,7 +239,8 @@ function Shop(props) {
                                                                 <p>{v.description}</p>
                                                                 <div className="d-flex justify-content-between flex-lg-wrap">
                                                                     <p className="text-dark fs-5 fw-bold mb-0">{v.price}</p>
-                                                                    <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary"><i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
+                                                                    <a onClick={handleAddToCart} href="#" className="btn border border-secondary rounded-pill px-3 text-primary">
+                                                                        <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
                                                                 </div>
                                                             </div>
                                                         </div>
