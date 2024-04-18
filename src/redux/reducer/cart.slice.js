@@ -29,25 +29,31 @@ const initialState={
 
         incrementCart:(state,action)=>{
             console.log(action);
-            const index=state.cart.findIndex((v)=>v.pid===action.payload)
-            if(index !== -1){
+            const index=state.cart.findIndex((v)=>v.pid === action.payload)
+         
                 state.cart[index].qty++;
-            }
+           
             
         },
 
         decrementCart:(state,action)=>{
             console.log(action);
             const index=state.cart.findIndex((v)=>v.pid===action.payload)
-            if(index !== -1){
+            
+            if (state.cart[index].qty > 1 ) {
                 state.cart[index].qty--;
             }
-        }
-       
 
-         
+                        
+        },
+
+        removeData:(state,action)=>{
+            console.log(action);
+            state.cart= state.cart.filter((v)=>v.pid!==action.payload)
+
+        }
     }
 })
 
-export const {addToCart,incrementCart,decrementCart}=cartSlice.actions;
+export const {addToCart,incrementCart,decrementCart,removeData}=cartSlice.actions;
 export default cartSlice.reducer;

@@ -17,7 +17,7 @@ function Shop(props) {
 
     console.log(facilitidatas);
 
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
 
     const handleFilter = (serch) => {
         let fdata = product.filter((v) => {
@@ -28,24 +28,24 @@ function Shop(props) {
 
     const handletype = (type) => {
         if (type === '') {
-          setFilteredProduct(product);
+            setFilteredProduct(product);
         } else {
-          let fdata = product.filter((v) => v.type === type);
-          setFilteredProduct(fdata);
+            let fdata = product.filter((v) => v.type === type);
+            setFilteredProduct(fdata);
         }
-      };
-      
-      const handleAddToCart=()=>{
+    };
+
+    const handleAddToCart = (id) => {
         dispatch(addToCart(id))
     }
 
     // console.log(filteredProduct);
 
     useEffect(() => {
-       dispatch(getproduct())
+        dispatch(getproduct())
     }, [])
 
-    const prouduct=useSelector(state=>state.products)
+    const prouduct = useSelector(state => state.products)
     console.log(prouduct);
 
 
@@ -141,7 +141,7 @@ function Shop(props) {
                                                         return (
                                                             <div className="mb-2">
                                                                 <input
-                                                                    onClick={(event) => handletype(event.target.value)} type="radio" className="me-2" id={`Categories-${n}`} name="Categories-1" value={n}/>
+                                                                    onClick={(event) => handletype(event.target.value)} type="radio" className="me-2" id={`Categories-${n}`} name="Categories-1" value={n} />
                                                                 <label > {n}</label>
                                                             </div>
                                                         );
@@ -239,8 +239,11 @@ function Shop(props) {
                                                                 <p>{v.description}</p>
                                                                 <div className="d-flex justify-content-between flex-lg-wrap">
                                                                     <p className="text-dark fs-5 fw-bold mb-0">{v.price}</p>
-                                                                    <a onClick={handleAddToCart} href="#" className="btn border border-secondary rounded-pill px-3 text-primary">
-                                                                        <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
+                                                                    <Link to={`/shop`}>
+                                                                        <a onClick={() => handleAddToCart(v.id)}
+                                                                            className="btn border border-secondary rounded-pill px-3 text-primary">
+                                                                            <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
+                                                                    </Link>
                                                                 </div>
                                                             </div>
                                                         </div>

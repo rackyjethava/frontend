@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Review from '../review/Review';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../../redux/reducer/cart.slice';
+import { addToCart, decrementCart, incrementCart } from '../../../redux/reducer/cart.slice';
+import { increment } from '../../../redux/reducer/counter.slice';
 
 function Shop_detail(props) {
     const [product, setproduct] = useState([])
@@ -31,6 +32,17 @@ function Shop_detail(props) {
 
     const handleAddToCart=()=>{
         dispatch(addToCart(id))
+    }
+
+    
+    const handleAdd = (id) => {
+        console.log("yes");
+      dispatch(incrementCart(id))
+    }
+
+    const handleRemove = (id) => {
+        console.log("no");
+        dispatch(decrementCart(id))
     }
 
 
@@ -94,13 +106,17 @@ function Shop_detail(props) {
                                     <p className="mb-4">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish</p>
                                     <div className="input-group quantity mb-5" style={{ width: 100 }}>
                                         <div className="input-group-btn">
-                                            <button className="btn btn-sm btn-minus rounded-circle bg-light border">
+                                            <button
+                                            onClick={() => handleRemove(cart.id)}
+                                            className="btn btn-sm btn-minus rounded-circle bg-light border">
                                                 <i className="fa fa-minus" />
                                             </button>
                                         </div>
                                         <input type="text" className="form-control form-control-sm text-center border-0" defaultValue={1} />
                                         <div className="input-group-btn">
-                                            <button className="btn btn-sm btn-plus rounded-circle bg-light border">
+                                            <button
+                                             onClick={() => handleAdd(cart.id)}
+                                            className="btn btn-sm btn-plus rounded-circle bg-light border">
                                                 <i className="fa fa-plus" />
                                             </button>
                                         </div>

@@ -1,38 +1,43 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { decrementCart, incrementCart } from '../../../../redux/reducer/cart.slice';
+import { decrementCart, incrementCart, removeData } from '../../../../redux/reducer/cart.slice';
 
 function Cart(props) {
 
-    const cart=useSelector(state=>state.cart_slice)
-    const product=useSelector(state=>state.products)
+    const cart = useSelector(state => state.cart_slice)
+    const product = useSelector(state => state.products)
 
-    const dispatch=useDispatch()
-    console.log(cart,product);
+    const dispatch = useDispatch()
+    console.log(cart, product);
 
-    const productdata=cart.cart.map((v)=>{
-        const products=product.products.find((v1)=>v1.id==v.pid)
+    const productdata = cart.cart.map((v) => {
+        const products = product.products.find((v1) => v1.id == v.pid)
 
         const totalPrice = v.qty * products.price;
 
-        return{...products,qty:v.qty,totalPrice}
+        return { ...products, qty: v.qty, totalPrice }
 
-       
+
     })
 
     const subtotal = productdata.reduce((acc, v) => acc + v.totalPrice, 0);
-    
+
 
     console.log(productdata);
 
-    const handleAdd=(id)=>{
+    const handleAdd = (id) => {
         console.log("yes");
         dispatch(incrementCart(id))
     }
 
-    const handleRemove=(id)=>{
+    const handleRemove = (id) => {
         console.log("no");
         dispatch(decrementCart(id))
+    }
+
+    const handleDeletProduct=(id)=>{
+        console.log(id);
+        dispatch(removeData(id))
     }
 
     return (
@@ -82,50 +87,62 @@ function Cart(props) {
                             </thead>
                             <tbody>
                                 {
-                                    productdata.map((v)=>(
+                                    productdata.map((v) => (
                                         <tr>
-                                        <th scope="row">
-                                            <div className="d-flex align-items-center">
-                                                <img src={v.imgSrc}  className="img-fluid me-5 rounded-circle" style={{ width: 80, height: 80 }} alt />
-                                            </div>
-                                        </th>
-                                        <td>
-                                            <p className="mb-0 mt-4">{v.name}</p>
-                                        </td>
-                                        <td>
-                                            <p className="mb-0 mt-4">{v.price}</p>
-                                        </td>
-                                        <td>
-                                            <div className="input-group quantity mt-4" style={{ width: 100 }}>
-                                                <div className="input-group-btn">
-                                                    <button onClick={()=>handleRemove(v.id)} className="btn btn-sm btn-minus rounded-circle bg-light border">
-                                                        <i className="fa fa-minus" />
-                                                    </button>
+                                            <th scope="row">
+                                                <div className="d-flex align-items-center">
+                                                    <img src={v.imgSrc} className="img-fluid me-5 rounded-circle" style={{ width: 80, height: 80 }} alt />
                                                 </div>
-                                                <input type="text" className="form-control form-control-sm text-center border-0" defaultValue={v.qty} />
-                                                <div className="input-group-btn">
-                                                    <button onClick={()=>handleAdd(v.id)} className="btn btn-sm btn-plus rounded-circle bg-light border">
-                                                        <i className="fa fa-plus" />
-                                                    </button>
+                                            </th>
+                                            <td>
+                                                <p className="mb-0 mt-4">{v.name}</p>
+                                            </td>
+                                            <td>
+                                                <p className="mb-0 mt-4">{v.price}</p>
+                                            </td>
+                                            <td>
+                                                <div className="input-group quantity mt-4" style={{ width: 100 }}>
+                                                    <div className="input-group-btn">
+                                                        <button
+                                                            onClick={() => handleRemove(v.id)}
+                                                            className="btn btn-sm btn-minus rounded-circle bg-light border"
+                                                        >
+                                                            <i className="fa fa-minus" />
+                                                        </button>
+                                                    </div>
+                                                    <span className="form-control form-control-sm text-center border-0">
+                                                  {v.qty}
+                                                    </span>
+                                                  
+                                                    <div className="input-group-btn">
+                                                        <button
+                                                            onClick={() => handleAdd(v.id)}
+                                                            className="btn btn-sm btn-plus rounded-circle bg-light border"
+                                                        >
+                                                            <i className="fa fa-plus" />
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p className="mb-0 mt-4">{v.totalPrice}</p>
-                                        </td>
-                                        <td>
-                                            <button className="btn btn-md rounded-circle bg-light border mt-4">
-                                                <i className="fa fa-times text-danger" />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                  
+                                            </td>
+                                            <td>
+                                                <p className="mb-0 mt-4">{v.totalPrice}</p>
+                                            </td>
+                                            <td>
+                                                <button
+                                                onClick={()=>handleDeletProduct(v.id)}
+                                                 className="btn btn-md rounded-circle bg-light border mt-4"
+                                                 >
+                                                    <i className="fa fa-times text-danger" />
+                                                </button>
+                                            </td>
+                                        </tr>
+
                                     ))
-                                    
+
                                 }
-                              
-                        
-                               
+
+
+
                             </tbody>
                         </table>
                     </div>
@@ -153,7 +170,7 @@ function Cart(props) {
                                 </div>
                                 <div className="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                                     <h5 className="mb-0 ps-4 me-4">Total</h5>
-                                    <p className="mb-0 pe-4">{subtotal} $</p>
+                                    <p className="mb-0 pe-4">{subtotal+3} $</p>
                                 </div>
                                 <button className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
                             </div>
