@@ -15,7 +15,7 @@ function Shop(props) {
     const [filteredProduct, setFilteredProduct] = useState([]);
     const { id } = useParams();
 
-    console.log(facilitidatas);
+    // console.log(facilitidatas);
 
     const dispatch = useDispatch()
 
@@ -36,7 +36,7 @@ function Shop(props) {
     };
 
     const handleAddToCart = (id) => {
-        dispatch(addToCart(id))
+        dispatch(addToCart({id:id,qty:1}))
     }
 
     // console.log(filteredProduct);
@@ -46,7 +46,7 @@ function Shop(props) {
     }, [])
 
     const prouduct = useSelector(state => state.products)
-    console.log(prouduct);
+    // console.log(prouduct);
 
 
     return (
@@ -239,10 +239,11 @@ function Shop(props) {
                                                                 <p>{v.description}</p>
                                                                 <div className="d-flex justify-content-between flex-lg-wrap">
                                                                     <p className="text-dark fs-5 fw-bold mb-0">{v.price}</p>
-                                                                    <Link to={`/shop`}>
-                                                                        <a onClick={() => handleAddToCart(v.id)}
-                                                                            className="btn border border-secondary rounded-pill px-3 text-primary">
-                                                                            <i className="fa fa-shopping-bag me-2 text-primary" /> Add to cart</a>
+                                                                    <Link to={`/shop`}
+                                                                     onClick={() => handleAddToCart(v.id)}
+                                                                     className="btn border border-secondary rounded-pill px-3 text-primary">
+                                                                        <i
+                                                                        className="fa fa-shopping-bag me-2" /> Add to cart
                                                                     </Link>
                                                                 </div>
                                                             </div>

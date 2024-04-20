@@ -240,5 +240,31 @@
       "price": "4.99",
       "type": "Sales"
     }
+  ],
+  "coupons": [
+    {
+      "id": "5c2b",
+      "coupon": "asdasd26526",
+      "persantage": 15,
+      "expairy": "2024-04-12"
+    },
+    {
+      "id": "f4f8",
+      "coupon": "asdf256",
+      "persantage": 10,
+      "expairy": "2024-04-30"
+    },
+    {
+      "id": "262a",
+      "coupon": "asdasd26526",
+      "persantage": 25,
+      "expairy": "2024-04-17"
+    },
+    {
+      "id": "9a88",
+      "coupon": "asdasd26526",
+      "persantage": 12,
+      "expairy": "2024-04-24"
+    }
   ]
 }

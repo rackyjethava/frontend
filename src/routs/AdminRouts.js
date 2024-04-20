@@ -7,6 +7,7 @@ import Category from '../admin/component/category/Category';
 import Facilities from '../admin/component/facilities/Facilities';
 import Products from '../admin/component/products/Products';
 import Counter from '../admin/component/counter/Counter';
+import Coupon from '../admin/component/coupon/Coupon';
 
 function AdminRouts(props) {
     return (
@@ -17,7 +18,7 @@ function AdminRouts(props) {
             <Route exact path='/category' element={<Category />} />
             <Route exact path='/facilities' element={<Facilities />} />
             <Route exact path='/products' element={<Products/>} />
-          
+            <Route  exact path='/coupon' element={<Coupon />}/>
         </Routes>
         </Layout>
     );

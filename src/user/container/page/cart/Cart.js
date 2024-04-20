@@ -13,14 +13,14 @@ function Cart(props) {
     const productdata = cart.cart.map((v) => {
         const products = product.products.find((v1) => v1.id == v.pid)
 
-        const totalPrice = v.qty * products.price;
+        // const totalPrice = v.qty * products.price;
 
-        return { ...products, qty: v.qty, totalPrice }
+        return { ...products, qty: v.qty,  }
 
 
     })
 
-    const subtotal = productdata.reduce((acc, v) => acc + v.totalPrice, 0);
+    // const subtotal = productdata.reduce((acc, v) => acc + v.totalPrice, 0);
 
 
     console.log(productdata);
@@ -158,7 +158,7 @@ function Cart(props) {
                                     <h1 className="display-6 mb-4">Cart <span className="fw-normal">Total</span></h1>
                                     <div className="d-flex justify-content-between mb-4">
                                         <h5 className="mb-0 me-4">Subtotal:</h5>
-                                        <p className="mb-0">{subtotal} $</p>
+                                        <p className="mb-0"> $</p>
                                     </div>
                                     <div className="d-flex justify-content-between">
                                         <h5 className="mb-0 me-4">Shipping</h5>
@@ -170,7 +170,7 @@ function Cart(props) {
                                 </div>
                                 <div className="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                                     <h5 className="mb-0 ps-4 me-4">Total</h5>
-                                    <p className="mb-0 pe-4">{subtotal+3} $</p>
+                                    <p className="mb-0 pe-4"> $</p>
                                 </div>
                                 <button className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
                             </div>

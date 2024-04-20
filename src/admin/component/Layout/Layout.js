@@ -21,6 +21,7 @@ import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 import { NavLink } from 'react-router-dom';
 import CategoryIcon from '@mui/icons-material/Category';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
 const drawerWidth = 240;
 
@@ -104,6 +105,9 @@ const adminlink=[
     },
     {
       title:"products", icon:<AppleIcon />,to:"/admin/products"
+    },
+    {
+      title:'coupon',icon:<LocalOfferIcon />,to:"/admin/coupon"
     }
 ]
 

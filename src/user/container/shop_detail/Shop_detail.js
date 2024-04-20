@@ -3,14 +3,29 @@ import { useParams } from 'react-router-dom';
 import Review from '../review/Review';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, decrementCart, incrementCart } from '../../../redux/reducer/cart.slice';
-import { increment } from '../../../redux/reducer/counter.slice';
+
 
 function Shop_detail(props) {
     const [product, setproduct] = useState([])
+    const [quantity,setquantity]=useState(1)
+
     const { id } = useParams();
 
+    const incermentQuantity=()=>{
+        console.log("yes");
+        setquantity((v)=>v+1)
+    }
+
+    const decermentQuantity=()=>{
+        console.log("no");
+        if(quantity>1){
+            setquantity((v)=>v-1)
+        }
+        
+    }
+
     const cart=useSelector(state=>state.cart_slice)
-    console.log(cart);
+    // console.log(cart);
 
     const dispatch=useDispatch()
 
@@ -31,19 +46,20 @@ function Shop_detail(props) {
     }, [])
 
     const handleAddToCart=()=>{
-        dispatch(addToCart(id))
+        dispatch(addToCart({id:id,qty:quantity}))
     }
 
+    // const handleAdd = (id) => {
+   
+    //     console.log("yess",id);
+    //     dispatch(incrementCart(id));
+    // };
     
-    const handleAdd = (id) => {
-        console.log("yes");
-      dispatch(incrementCart(id))
-    }
-
-    const handleRemove = (id) => {
-        console.log("no");
-        dispatch(decrementCart(id))
-    }
+    // const handleRemove = (id) => {
+    
+    //     console.log("no",id);
+    //     dispatch(decrementCart(id));
+    // };
 
 
 
@@ -107,15 +123,17 @@ function Shop_detail(props) {
                                     <div className="input-group quantity mb-5" style={{ width: 100 }}>
                                         <div className="input-group-btn">
                                             <button
-                                            onClick={() => handleRemove(cart.id)}
+                                            onClick={decermentQuantity}
                                             className="btn btn-sm btn-minus rounded-circle bg-light border">
                                                 <i className="fa fa-minus" />
                                             </button>
                                         </div>
-                                        <input type="text" className="form-control form-control-sm text-center border-0" defaultValue={1} />
+                                        <span className="form-control form-control-sm text-center border-0">
+                                               {quantity}
+                                         </span>
                                         <div className="input-group-btn">
                                             <button
-                                             onClick={() => handleAdd(cart.id)}
+                                             onClick={incermentQuantity}
                                             className="btn btn-sm btn-plus rounded-circle bg-light border">
                                                 <i className="fa fa-plus" />
                                             </button>
