@@ -1,21 +1,29 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrementCart, incrementCart, removeData } from '../../../../redux/reducer/cart.slice';
+import { useFormik } from 'formik';
+import { object, string, number, date, InferType } from 'yup';
+import { getcoupontdata } from '../../../../redux/slice/coupon.slice';
 
 function Cart(props) {
 
     const cart = useSelector(state => state.cart_slice)
     const product = useSelector(state => state.products)
+    const coupon=useSelector(state=>state.coupon)
+    console.log(coupon);
 
     const dispatch = useDispatch()
-    console.log(cart, product);
+
+    useEffect(() => {
+        dispatch(getcoupontdata())
+    }, [])
 
     const productdata = cart.cart.map((v) => {
         const products = product.products.find((v1) => v1.id == v.pid)
 
         // const totalPrice = v.qty * products.price;
 
-        return { ...products, qty: v.qty,  }
+        return { ...products, qty: v.qty, }
 
 
     })
@@ -35,10 +43,35 @@ function Cart(props) {
         dispatch(decrementCart(id))
     }
 
-    const handleDeletProduct=(id)=>{
+    const handleDeletProduct = (id) => {
         console.log(id);
         dispatch(removeData(id))
     }
+
+    const handleCoupon = (data) => {
+        if(coupon.console){
+
+        }
+    }
+
+    let userSchema = object({
+        name: string().required(),
+        createdOn: date().default(() => new Date()),
+      });
+
+    const formik = useFormik({
+        initialValues: {
+          name: '',
+         
+        },
+        validationSchema: userSchema,
+        onSubmit: (values,{resetForm}) => {
+            
+            handleCoupon(values)
+        },  
+      });
+
+      const { handleSubmit, handleChange, handleBlur, values, touched, errors } = formik;
 
     return (
         <div>
@@ -111,9 +144,9 @@ function Cart(props) {
                                                         </button>
                                                     </div>
                                                     <span className="form-control form-control-sm text-center border-0">
-                                                  {v.qty}
+                                                        {v.qty}
                                                     </span>
-                                                  
+
                                                     <div className="input-group-btn">
                                                         <button
                                                             onClick={() => handleAdd(v.id)}
@@ -129,9 +162,9 @@ function Cart(props) {
                                             </td>
                                             <td>
                                                 <button
-                                                onClick={()=>handleDeletProduct(v.id)}
-                                                 className="btn btn-md rounded-circle bg-light border mt-4"
-                                                 >
+                                                    onClick={() => handleDeletProduct(v.id)}
+                                                    className="btn btn-md rounded-circle bg-light border mt-4"
+                                                >
                                                     <i className="fa fa-times text-danger" />
                                                 </button>
                                             </td>
@@ -146,10 +179,29 @@ function Cart(props) {
                             </tbody>
                         </table>
                     </div>
-                    <div className="mt-5">
-                        <input type="text" className="border-0 border-bottom rounded me-5 py-3 mb-4" placeholder="Coupon Code" />
-                        <button className="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Apply Coupon</button>
-                    </div>
+                    <form className="mt-5" onSubmit={handleSubmit}>
+                        <input
+                           margin="dense"
+                           className="border-0 border-bottom rounded me-5 py-3 mb-4"
+                           id="name"
+                           name="name"
+                           label="name"
+                           type="text"
+                           fullWidth
+                           variant="standard"
+                           onChange={handleChange}
+                           onBlur={handleBlur}
+                           value={values.name}
+                           error={touched.name && errors.name ? errors.name : false}
+                           helperText={touched.name && errors.name ? errors.name : ""}
+                        />
+
+                        <input
+                            className="btn border-secondary rounded-pill px-4 py-3 text-primary"
+                            type="submit"
+                        />
+                    </form>
+
                     <div className="row g-4 justify-content-end">
                         <div className="col-8" />
                         <div className="col-sm-8 col-md-7 col-lg-6 col-xl-4">

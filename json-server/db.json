@@ -243,28 +243,16 @@
   ],
   "coupons": [
     {
-      "id": "5c2b",
-      "coupon": "asdasd26526",
+      "id": "77f6",
+      "coupon": "ASDS25",
+      "persantage": 20,
+      "expairy": "2024-04-26"
+    },
+    {
+      "id": "52ad",
+      "coupon": "DSE5856",
       "persantage": 15,
-      "expairy": "2024-04-12"
-    },
-    {
-      "id": "f4f8",
-      "coupon": "asdf256",
-      "persantage": 10,
       "expairy": "2024-04-30"
-    },
-    {
-      "id": "262a",
-      "coupon": "asdasd26526",
-      "persantage": 25,
-      "expairy": "2024-04-17"
-    },
-    {
-      "id": "9a88",
-      "coupon": "asdasd26526",
-      "persantage": 12,
-      "expairy": "2024-04-24"
     }
   ]
 }
