@@ -11,12 +11,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { object, string, number, date, InferType } from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { add_facilities, edite_facilities, get_facilities, remove_facalty } from '../../../redux/action/facilities.action';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { Spinner } from 'reactstrap';
-import { addproduct, deletproduct, editeProduct, getproduct } from '../../../redux/action/Product.action';
+
 import { addcoupontdata, deleteCoupon, editeCoupon, getcoupontdata } from '../../../redux/slice/coupon.slice';
 
 function Products(props) {

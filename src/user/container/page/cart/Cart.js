@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { decrementCart, incrementCart, removeData } from '../../../../redux/reducer/cart.slice';
 import { useFormik } from 'formik';
 import { object, string, number, date, InferType } from 'yup';
 import { getcoupontdata } from '../../../../redux/slice/coupon.slice';
+import { data, data1 } from '../../../../App';
 
 function Cart(props) {
+    const firstname=useContext(data);
+    const age=useContext(data1);
 
     const cart = useSelector(state => state.cart_slice)
     const product = useSelector(state => state.products)
@@ -21,14 +24,11 @@ function Cart(props) {
     const productdata = cart.cart.map((v) => {
         const products = product.products.find((v1) => v1.id == v.pid)
 
-        // const totalPrice = v.qty * products.price;
 
         return { ...products, qty: v.qty, }
 
-
     })
 
-    // const subtotal = productdata.reduce((acc, v) => acc + v.totalPrice, 0);
 
 
     console.log(productdata);
@@ -49,9 +49,34 @@ function Cart(props) {
     }
 
     const handleCoupon = (data) => {
-        if(coupon.console){
+      let flag=0;
+      coupon.coupons.map((v)=>{
+       
+          if(v.coupon===data.name){
+            const currebtdate=new Date();
 
+            const expairtdate=new Date(v.expairy);
+
+            if(currebtdate <=expairtdate){
+                flag=1;
+            }else{
+                flag=2;
+            }   
+            
         }
+      });
+
+      if(flag===0){
+        formik.setFieldError("name","Coupon not found");
+
+      }else if(flag===1){
+        formik.setFieldError("name","Coupon aplaied");
+        discountCoupon(data)
+      }else if(flag===2){
+        formik.setFieldError("name","Coupon Expired");
+
+      }
+
     }
 
     let userSchema = object({
@@ -70,6 +95,19 @@ function Cart(props) {
             handleCoupon(values)
         },  
       });
+
+
+    const discountCoupon = (data) => {
+        const discount = coupon.coupons.find((v) => v.coupon === data.name);
+        console.log(discount);
+
+        if (discount) {
+            const discountPersantage = discount.persantage / 100
+            return  productdata.reduce((total, v) => total + v.price * v.qty, 0)*(1-discountPersantage) 
+        }
+
+        return productdata.reduce((total, v) => total + v.price * v.qty, 0)
+    }
 
       const { handleSubmit, handleChange, handleBlur, values, touched, errors } = formik;
 
@@ -158,7 +196,7 @@ function Cart(props) {
                                                 </div>
                                             </td>
                                             <td>
-                                                <p className="mb-0 mt-4">{v.totalPrice}</p>
+                                                <p className="mb-0 mt-4">{v.qty*v.price}</p>
                                             </td>
                                             <td>
                                                 <button
@@ -192,9 +230,10 @@ function Cart(props) {
                            onChange={handleChange}
                            onBlur={handleBlur}
                            value={values.name}
-                           error={touched.name && errors.name ? errors.name : false}
-                           helperText={touched.name && errors.name ? errors.name : ""}
                         />
+                        {
+                            touched.name && errors.name ?<span>{errors.name}</span>:null
+                        }
 
                         <input
                             className="btn border-secondary rounded-pill px-4 py-3 text-primary"
@@ -210,7 +249,7 @@ function Cart(props) {
                                     <h1 className="display-6 mb-4">Cart <span className="fw-normal">Total</span></h1>
                                     <div className="d-flex justify-content-between mb-4">
                                         <h5 className="mb-0 me-4">Subtotal:</h5>
-                                        <p className="mb-0"> $</p>
+                                        <p className="mb-0"> {productdata.reduce((total, v) => total + v.price * v.qty, 0)}$</p>
                                     </div>
                                     <div className="d-flex justify-content-between">
                                         <h5 className="mb-0 me-4">Shipping</h5>
@@ -219,10 +258,13 @@ function Cart(props) {
                                         </div>
                                     </div>
                                     <p className="mb-0 text-end">Shipping to Ukraine.</p>
+                                    <div>
+                                        <p className='mb-0'>total after discount: <span className='text-sucsess fs-4'>{discountCoupon} </span></p>
+                                    </div>
                                 </div>
                                 <div className="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                                     <h5 className="mb-0 ps-4 me-4">Total</h5>
-                                    <p className="mb-0 pe-4"> $</p>
+                                    <p className="mb-0 pe-4"> {productdata.reduce((total, v) => total + v.price * v.qty, 0) * 3}$</p>
                                 </div>
                                 <button className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
                             </div>
@@ -231,6 +273,8 @@ function Cart(props) {
                 </div>
             </div>
             {/* Cart Page End */}
+
+            <h1>my name is{firstname} and my age is {age}</h1>
         </div>
 
     );
