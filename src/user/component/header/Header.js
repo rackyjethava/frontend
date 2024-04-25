@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { ThemeContext } from '../../../context/ThemeContext';
 
 function Header(props) {
     const cart=useSelector(state=>state.cart_slice)
     console.log(cart);
     const totalQty = cart.cart.reduce((acc, curr) => acc + curr.qty, 0);
             console.log(totalQty);
+
+
+
+    const themeContext=useContext(ThemeContext)
+    console.log(themeContext);
+
+    const handlrTheame=()=>{
+            themeContext.toggleTheme( themeContext.theme) 
+            
+    }
 
     return (
         <div>
@@ -53,6 +64,7 @@ function Header(props) {
                                 <NavLink to="/contect" className="nav-item nav-link">Contact</NavLink>
                             </div>
                             <div className="d-flex m-3 me-0">
+                                <button onClick={handlrTheame}>change theme</button>
 
                                 <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i className="fas fa-search text-primary" /></button>
 

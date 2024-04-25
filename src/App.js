@@ -6,37 +6,31 @@ import PrivetRouts from './routs/PrivetRouts';
 import { Provider } from 'react-redux';
 import { configstore } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
+import { ThemeProvider } from './context/ThemeContext';
 
-const data=createContext()
-const data1=createContext()
 
 function App() {
-  const name = "jhon"
-  const age = 20
-  const {store,persistor} = configstore()
+
+  const { store, persistor } = configstore()
   return (
     <>
-      <data.Provider value={name}>
-      <data1.Provider value={age}>
-    <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <Routes>
-        <Route element={<PrivetRouts />} >
-        <Route exact path='/admin/*' element={<AdminRouts />}/>
-        </Route>
-        <Route exact path='/*' element={<UserRouts />}/>
-        
-      </Routes>
-      </PersistGate>
-      </Provider>
-    
+    <ThemeProvider>
+         <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <Routes>
+                <Route element={<PrivetRouts />} >
+                  <Route exact path='/admin/*' element={<AdminRouts />} />
+                </Route>
+                <Route exact path='/*' element={<UserRouts />} />
 
-      </data1.Provider>
-      </data.Provider>
+              </Routes>
+            </PersistGate>
+          </Provider>
+          </ThemeProvider>
     </>
-    
+
   );
 }
 
 export default App;
-export{data,data1}
+

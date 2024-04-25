@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Header from '../user/component/header/Header';
 import { Route, Routes } from 'react-router-dom';
 import Footer from '../user/component/Footer/Footer';
@@ -12,11 +12,15 @@ import Error from '../user/container/page/error/Error';
 import Contect from '../user/container/contect/Contect';
 import UserLogin from '../user/container/login/UserLogin';
 import UserRagister from '../user/container/ragister/UserRagister';
+import { ThemeContext } from '../context/ThemeContext';
 
 
 function UserRouts(props) {
+    const themeContext=useContext(ThemeContext)
+    console.log(themeContext.them);
+  
     return (
-        <>
+        <div className={themeContext.theme}>
             <Header />
             <Routes>
                 <Route exact path="/" element={<Home />} />
@@ -33,7 +37,7 @@ function UserRouts(props) {
                 
             </Routes>
             <Footer />
-        </>
+        </div>
     );
 }
 

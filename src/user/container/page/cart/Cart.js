@@ -4,11 +4,8 @@ import { decrementCart, incrementCart, removeData } from '../../../../redux/redu
 import { useFormik } from 'formik';
 import { object, string, number, date, InferType } from 'yup';
 import { getcoupontdata } from '../../../../redux/slice/coupon.slice';
-import { data, data1 } from '../../../../App';
 
 function Cart(props) {
-    const firstname=useContext(data);
-    const age=useContext(data1);
 
     const cart = useSelector(state => state.cart_slice)
     const product = useSelector(state => state.products)
@@ -274,7 +271,6 @@ function Cart(props) {
             </div>
             {/* Cart Page End */}
 
-            <h1>my name is{firstname} and my age is {age}</h1>
         </div>
 
     );
