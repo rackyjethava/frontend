@@ -21,13 +21,8 @@ function Header(props) {
 
     return (
         <div>
-            {/* Spinner Start */}
-            {/* <div id="spinner" className="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-                <div className="spinner-grow text-primary" role="status" />
-            </div> */}
-            {/* Spinner End */}
             {/* Navbar start */}
-            <div className="container-fluid fixed-top">
+            <div className={`container-fluid fixed-top ${themeContext.theme === 'dark' ? 'bg-dark' : 'bg-light'}`}>
                 <div className="container topbar bg-primary d-none d-lg-block">
                     <div className="d-flex justify-content-between">
                         <div className="top-info ps-2">
@@ -42,7 +37,7 @@ function Header(props) {
                     </div>
                 </div>
                 <div className="container px-0">
-                    <nav className="navbar navbar-light bg-white navbar-expand-xl">
+                    <nav className={`navbar navbar-expand-xl ${themeContext.theme === 'dark' ? 'navbar-dark bg-dark' : 'navbar-light bg-light'}`}>
                         <a href="index.html" className="navbar-brand"><h1 className="text-primary display-6">Fruitables</h1></a>
                         <button className="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                             <span className="fa fa-bars text-primary" />

@@ -8,14 +8,13 @@ import { getproduct } from '../../../redux/action/Product.action';
 // console.log(fruitdata);
 
 function Shop(props) {
-    const { facilitidatas } = props;
     const [product, setproduct] = useState([])
     const [category, setCategory] = useState([])
     const [types, setTypes] = useState([])
     const [filteredProduct, setFilteredProduct] = useState([]);
     const { id } = useParams();
-
-    // console.log(facilitidatas);
+    console.log(filteredProduct);
+  
 
     const dispatch = useDispatch()
 
@@ -25,6 +24,7 @@ function Shop(props) {
         });
         setFilteredProduct(fdata);
     }
+
 
     const handletype = (type) => {
         if (type === '') {
@@ -61,7 +61,12 @@ function Shop(props) {
                         </div>
                         <div className="modal-body d-flex align-items-center">
                             <div className="input-group w-75 mx-auto d-flex">
-                                <input type="search" className="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" />
+                                <input type="search"
+  
+                                 className="form-control p-3"
+                                  placeholder="keywords"
+                                   aria-describedby="search-icon-1"
+                                    />
                                 <span id="search-icon-1" className="input-group-text p-3"><i className="fa fa-search" /></span>
                             </div>
                         </div>
@@ -88,7 +93,12 @@ function Shop(props) {
                             <div className="row g-4">
                                 <div className="col-xl-3">
                                     <div className="input-group w-100 mx-auto d-flex">
-                                        <input onChange={(event) => handleFilter(event.target.value)} type="search" className="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" />
+                                        <input
+                                         onChange={(event) => handleFilter(event.target.value)}
+                                          type="search"
+                                           className="form-control p-3"
+                                            placeholder="keywords"
+                                             aria-describedby="search-icon-1" />
                                         <span id="search-icon-1" className="input-group-text p-3"><i className="fa fa-search" /></span>
                                     </div>
                                 </div>

@@ -9,6 +9,7 @@ import Products from '../admin/component/products/Products';
 import Counter from '../admin/component/counter/Counter';
 import Coupon from '../admin/component/coupon/Coupon';
 
+
 function AdminRouts(props) {
     return (
         <Layout>
@@ -19,6 +20,7 @@ function AdminRouts(props) {
             <Route exact path='/facilities' element={<Facilities />} />
             <Route exact path='/products' element={<Products/>} />
             <Route  exact path='/coupon' element={<Coupon />}/>
+     
         </Routes>
         </Layout>
     );
