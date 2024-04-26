@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { Button } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { ThemeContext } from '../../../context/ThemeContext';
 
 function Home(props) {
 
+    const themeContext=useContext(ThemeContext)
+    console.log(themeContext);
+
+    const handlrTheame=()=>{
+            themeContext.toggleTheme( themeContext.theme) 
+            
+    }
     const facilities = useSelector((state) => state.facilities)
     console.log(facilities);
 
@@ -76,7 +84,7 @@ function Home(props) {
     return (
         <div>
             {/* Hero Start */}
-            <div className="container-fluid py-5 mb-5 hero-header">
+            <div className={`container-fluid py-5 mb-5 hero-header  ${themeContext.theme}`}>
                 <div className="container py-5">
                     <div className="row g-5 align-items-center">
                         <div className="col-md-12 col-lg-7">
@@ -140,12 +148,12 @@ function Home(props) {
             </div>
             {/* Featurs Section End */}
             {/* Fruits Shop Start*/}
-            <div className="container-fluid fruite py-5">
+            <div className={`container-fluid fruite py-5 ${themeContext.theme}`}>
                 <div className="container py-5">
                     <div className="tab-class text-center">
                         <div className="row g-4">
                             <div className="col-lg-4 text-start">
-                                <h1>Our Organic Products</h1>
+                                <h1 >Our Organic Products</h1>
                             </div>
                             <div className="col-lg-8 text-end">
                                 <ul className="nav nav-pills d-inline-flex text-center mb-5">
@@ -664,7 +672,7 @@ function Home(props) {
             </div>
             {/* Vesitable Shop End */}
             {/* Banner Section Start*/}
-            <div className="container-fluid banner bg-secondary my-5">
+            <div className={`container-fluid banner bg-secondary my-5  ${themeContext.theme}`}>
                 <div className="container py-5">
                     <div className="row g-4 align-items-center">
                         <div className="col-lg-6">
@@ -698,9 +706,9 @@ function Home(props) {
                         <h1 className="display-4">Bestseller Products</h1>
                         <p>Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
                     </div>
-                    <div className="row g-4">
+                    <div className={`row g-4  ${themeContext.theme}`}>
                         <div className="col-lg-6 col-xl-4">
-                            <div className="p-4 rounded bg-light">
+                            <div className="p-4 border border-secondary  rounded-bottom">
                                 <div className="row align-items-center">
                                     <div className="col-6">
                                         <img src="img/best-product-1.jpg" className="img-fluid rounded-circle w-100" alt />
@@ -721,7 +729,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="col-lg-6 col-xl-4">
-                            <div className="p-4 rounded bg-light">
+                            <div className="p-4 border border-secondary  rounded-bottom">
                                 <div className="row align-items-center">
                                     <div className="col-6">
                                         <img src="img/best-product-2.jpg" className="img-fluid rounded-circle w-100" alt />
@@ -742,7 +750,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="col-lg-6 col-xl-4">
-                            <div className="p-4 rounded bg-light">
+                            <div className="p-4 border border-secondary  rounded-bottom">
                                 <div className="row align-items-center">
                                     <div className="col-6">
                                         <img src="img/best-product-3.jpg" className="img-fluid rounded-circle w-100" alt />
@@ -763,7 +771,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="col-lg-6 col-xl-4">
-                            <div className="p-4 rounded bg-light">
+                            <div className="p-4 border border-secondary rounded-bottom">
                                 <div className="row align-items-center">
                                     <div className="col-6">
                                         <img src="img/best-product-4.jpg" className="img-fluid rounded-circle w-100" alt />
@@ -784,7 +792,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="col-lg-6 col-xl-4">
-                            <div className="p-4 rounded bg-light">
+                            <div className="p-4 border border-secondary  rounded-bottom">
                                 <div className="row align-items-center">
                                     <div className="col-6">
                                         <img src="img/best-product-5.jpg" className="img-fluid rounded-circle w-100" alt />
@@ -805,7 +813,7 @@ function Home(props) {
                             </div>
                         </div>
                         <div className="col-lg-6 col-xl-4">
-                            <div className="p-4 rounded bg-light">
+                            <div className="p-4 border border-secondary rounded-bottom">
                                 <div className="row align-items-center">
                                     <div className="col-6">
                                         <img src="img/best-product-6.jpg" className="img-fluid rounded-circle w-100" alt />
@@ -898,15 +906,15 @@ function Home(props) {
             </div>
             {/* Bestsaler Product End */}
             {/* Fact Start */}
-            <div className="container-fluid py-5">
+            <div className={`container-fluid py-5   ${themeContext.theme}` }>
                 <div className="container">
                     <div className="bg-light p-5 rounded">
                         <div className="row g-4 justify-content-center">
                             <div className="col-md-6 col-lg-6 col-xl-3">
                                 <div className="counter bg-white rounded p-5">
                                     <i className="fa fa-users text-secondary" />
-                                    <h4>satisfied customers</h4>
-                                    <h1>1963</h1>
+                                    <h4 >satisfied customers</h4>
+                                    <h1 >1963</h1>
                                 </div>
                             </div>
                             <div className="col-md-6 col-lg-6 col-xl-3">

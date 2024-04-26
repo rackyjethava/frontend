@@ -496,12 +496,51 @@
 /*** Footer End ***/
 
 .dark{
-    background: black !important;
+    background:  none !important;
+    background-color: black !important;
     color: white;
 }
 
+.dark .bg-secondary{
+    background-color:none !important ;
+}
+
 .light{
-    background: white !important;
+   
+    background-color: white !important;
     color: black;
 }
+
+
+
+.dark h1{
+    color: white;
+}
+
+.dark h4{
+    color: white;
+}
+
+.dark a .h5{
+    color: white;
+}
+
+.dark .customer{
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: black;
+}
+
+
+/* //    color: var(--bs-primary);
+letter-spacing: 1px;
+text-transform: uppercase; */
+
+
+/* margin-top: 0;
+    margin-bottom: .5rem;
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #4b5b45; */
 

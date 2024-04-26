@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from '../../../context/ThemeContext';
+
+
+
 
 function Footer(props) {
+
+
+    
+const themeContext = useContext(ThemeContext)
+console.log(themeContext);
+
+const handlrTheame = () => {
+    themeContext.toggleTheme(themeContext.theme)
+
+}
     return (
         <div>
             {/* Footer Start */}
@@ -30,7 +44,7 @@ function Footer(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="row g-5">
+                    <div className={`row g-5  `}>
                         <div className="col-lg-3 col-md-6">
                             <div className="footer-item">
                                 <h4 className="text-light mb-3">Why People Like us!</h4>

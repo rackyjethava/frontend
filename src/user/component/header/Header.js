@@ -2,27 +2,38 @@ import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { ThemeContext } from '../../../context/ThemeContext';
+import ContrastIcon from '@mui/icons-material/Contrast';
+import { Box } from '@mui/material';
+import { IconButton } from '@mui/material';
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+
 
 function Header(props) {
-    const cart=useSelector(state=>state.cart_slice)
+    const cart = useSelector(state => state.cart_slice)
     console.log(cart);
     const totalQty = cart.cart.reduce((acc, curr) => acc + curr.qty, 0);
-            console.log(totalQty);
+    console.log(totalQty);
 
 
 
-    const themeContext=useContext(ThemeContext)
+    const themeContext = useContext(ThemeContext)
     console.log(themeContext);
 
-    const handlrTheame=()=>{
-            themeContext.toggleTheme( themeContext.theme) 
-            
+    const handlrTheame = () => {
+        themeContext.toggleTheme(themeContext.theme)
+
     }
 
     return (
         <div>
+            {/* Spinner Start */}
+            {/* <div id="spinner" className="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+                <div className="spinner-grow text-primary" role="status" />
+            </div> */}
+            {/* Spinner End */}
             {/* Navbar start */}
-            <div className={`container-fluid fixed-top ${themeContext.theme === 'dark' ? 'bg-dark' : 'bg-light'}`}>
+            <div className={`container-fluid fixed-top ${themeContext.theme}`}>
                 <div className="container topbar bg-primary d-none d-lg-block">
                     <div className="d-flex justify-content-between">
                         <div className="top-info ps-2">
@@ -36,13 +47,13 @@ function Header(props) {
                         </div>
                     </div>
                 </div>
-                <div className="container px-0">
-                    <nav className={`navbar navbar-expand-xl ${themeContext.theme === 'dark' ? 'navbar-dark bg-dark' : 'navbar-light bg-light'}`}>
+                <div className={`container px-0`}>
+                    <nav className={`navbar   navbar-expand-xl `}>
                         <a href="index.html" className="navbar-brand"><h1 className="text-primary display-6">Fruitables</h1></a>
                         <button className="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                             <span className="fa fa-bars text-primary" />
                         </button>
-                        <div className="collapse navbar-collapse bg-white" id="navbarCollapse">
+                        <div className="collapse navbar-collapse " id="navbarCollapse">
                             <div className="navbar-nav mx-auto">
                                 <NavLink to="/" className="nav-item nav-link active">Home</NavLink>
                                 <NavLink to="/shop" className="nav-item nav-link">Shop</NavLink>
@@ -59,7 +70,7 @@ function Header(props) {
                                 <NavLink to="/contect" className="nav-item nav-link">Contact</NavLink>
                             </div>
                             <div className="d-flex m-3 me-0">
-                                <button onClick={handlrTheame}>change theme</button>
+                               
 
                                 <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i className="fas fa-search text-primary" /></button>
 
@@ -76,6 +87,24 @@ function Header(props) {
                                 <NavLink to="/login" className="my-auto">
                                     <i className="fas fa-user fa-2x" />
                                 </NavLink>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        bgcolor: "background.default",
+                                        color: "text.primary",
+                                        borderRadius: 50,
+                                    }}
+                                >
+                                    <IconButton onClick={handlrTheame} color="inherit">
+                                        {themeContext.theme === "dark" ? (
+                                            <Brightness4Icon />
+                                        ) : (
+                                            <Brightness7Icon />
+                                        )}
+                                    </IconButton>
+                                </Box>
                             </div>
                         </div>
                     </nav>
