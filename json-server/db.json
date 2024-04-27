@@ -254,5 +254,42 @@
       "persantage": 15,
       "expairy": "2024-04-30"
     }
+  ],
+  "verity": [
+    {
+      "id": "7df1",
+      "name": "HJK2356",
+      "description": "deliciace fruit"
+    },
+    {
+      "id": "2b49",
+      "name": "HJK2356",
+      "description": "deliciace fruit"
+    },
+    {
+      "id": "153b",
+      "name": "HJK2356",
+      "description": "deliciace fruit"
+    },
+    {
+      "id": "46b5",
+      "name": "HJK2356",
+      "description": "deliciace fruit"
+    },
+    {
+      "id": "8fbb",
+      "name": "aswdasdf",
+      "description": "asdasd"
+    },
+    {
+      "id": "738d",
+      "name": "HJK2356",
+      "description": "deliciace fruit"
+    },
+    {
+      "id": "7de2",
+      "name": "HJK2356",
+      "description": "deliciace fruit"
+    }
   ]
 }
