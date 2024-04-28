@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { configstore } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
 import { ThemeProvider } from './context/ThemeContext';
+import { VerityProvider } from './context/VerityContext';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
   const { store, persistor } = configstore()
   return (
     <>
+    <VerityProvider>
     <ThemeProvider>
          <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
@@ -27,6 +29,7 @@ function App() {
             </PersistGate>
           </Provider>
           </ThemeProvider>
+          </VerityProvider>
     </>
 
   );
