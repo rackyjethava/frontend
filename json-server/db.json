@@ -255,8 +255,18 @@
       "expairy": "2024-04-30"
     }
   ],
-  "verity":[
-    
+  "contact": [
+    {
+      "id": "d07b",
+      "address": "sdfuhgsjdf",
+      "email": "piyushjethava247@gmail.com",
+      "telephon": 621465546569
+    },
+    {
+      "id": "3ca3",
+      "address": "sdfuhgsjdf",
+      "email": "piyushjethava247@gmail.com",
+      "telephon": 456456456
+    }
   ]
-
 }
