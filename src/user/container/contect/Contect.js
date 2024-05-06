@@ -1,6 +1,7 @@
 import React from 'react';
 import { object, string, number, date, InferType } from 'yup';
 import { useFormik } from 'formik';
+import Input from '../../component/UI/Input/Input';
 
 function Contect(props) {
 
@@ -80,21 +81,23 @@ function Contect(props) {
                                         style={{ color: "red", marginTop: "-10px" }}>
                                         {touched.name && errors.name ? errors.name : ''}
                                     </span>
-                                    <input
+                                 
+                                    <Input
                                         type="text"
-                                        className="w-100 form-control border-0 py-3 mb-4"
+                                     
                                         placeholder="Your Name"
                                         name='name'
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.name}
                                     />
+                               
                                     <span style={{ color: "red", marginTop: "-10px" }}>
                                         {touched.email && errors.email ? errors.email : ''}
                                     </span>
-                                    <input
+                                    <Input
                                         type="email"
-                                        className="w-100 form-control border-0 py-3 mb-4"
+                                       
                                         placeholder="Enter Your Email"
                                         name='email'
                                         onChange={handleChange}
