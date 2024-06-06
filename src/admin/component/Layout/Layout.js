@@ -101,6 +101,9 @@ const adminlink=[
       title:"Category", icon:<CategoryIcon />,to:"/admin/category"
     },
     {
+      title:"Subcategory", icon:<LocalOfferIcon />, to:"/admin/subcategory"
+    },
+    {
       title:"facilities", icon:<HomeRepairServiceIcon />,to:"/admin/facilities"
     },
     {
@@ -110,7 +113,7 @@ const adminlink=[
       title:'coupon',icon:<LocalOfferIcon />,to:"/admin/coupon"
     },
     {
-      title:"contact", icon:<HomeRepairServiceIcon />,to:"/admin/contact"
+      title:"verity", icon:<HomeRepairServiceIcon />,to:"/admin/verity"
     }
 ]
 

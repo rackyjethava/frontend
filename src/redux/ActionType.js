@@ -16,3 +16,10 @@ export const GET_REVIEW='GET_REVIEW'
 export const ADD_TO_CART='ADD_TO_CART'
 export const GET_CART_DATA='GET_CART_DATA'
 
+export const ADD_CATEGORY='ADD_CATEGORY'
+export const DELETE_CATEGORY=' DELETE_CATEGORY'
+export const EDIT_CATEGORY='EDIT_CATEGORY'
+export const GET_CATEGORY='GET_CATEGORY'
+
+
+

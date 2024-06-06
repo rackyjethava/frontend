@@ -4,53 +4,72 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+
 import DialogTitle from '@mui/material/DialogTitle';
 import { object, string } from 'yup';
 import { useFormik } from 'formik';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
-import axios from 'axios';
 
-export default function Category() {
-    const [open, setOpen] = useState(false);
-    const [categorydata, setdata] = useState([]);
+export default function Subcategories() {
+    const [open, setOpen] = React.useState(false);
+    const [categorydata, setcategorydata] = useState([]);
+    const [data,setdata]=useState([])
     const [editing, setEditing] = useState(null);
-
-    const contectSchema = object({
+    let contectSchema = object({
         name: string().required(),
         description: string().required().min(10),
+
     });
 
     const getdata = async () => {
+        console.log("data found");
         try {
-            const response = await axios.get("http://localhost:8000/api/v1/categories/list-categories");
-            setdata(response.data.data);
+            const response = await fetch("http://localhost:8000/api/v1/sub_categories/list-subcategories");
+            const data = await response.json()
+            console.log(data);
+            setdata(data.data)
         } catch (error) {
-            console.error(error);
+
+        }
+    }
+
+    const getcategorydata=async ()=>{
+        try {
+            const response = await fetch("http://localhost:8000/api/v1/categories/list-categories");
+            const data = await response.json()
+            console.log(data);
+            setcategorydata(data.data)
+        } catch (error) {
+
         }
     }
 
     useEffect(() => {
         getdata();
+        getcategorydata();
     }, [])
 
     const formik = useFormik({
         initialValues: {
             name: '',
             description: '',
+            category: '',
+            Category_id:''
         },
         validationSchema: contectSchema,
         onSubmit: (values, { resetForm }) => {
             if (editing) {
-                handleUpdate(values);
+                handleUpdate(values)
             } else {
-                handleAdd(values);
+                handleAdd(values)
             }
-            resetForm();
-            handleClose();
+            resetForm()
+            handleClose(true)
         },
     });
 
@@ -60,56 +79,88 @@ export default function Category() {
         setOpen(true);
     };
 
+    const rno = Math.floor(Math.random() * 10000);
+
     const handleClose = () => {
         setOpen(false);
         formik.resetForm();
-        setEditing(null);
+        setEditing(null)
     };
 
     const handleAdd = async (data) => {
         try {
-            await axios.post("http://localhost:8000/api/v1/categories/add-category", data, {
+            await fetch("http://localhost:8000/api/v1/sub_categories/add-subcategory", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
-                }
-            });
-            getdata();
+                },
+                body: JSON.stringify({...data, Category_id: values.category })
+            })
+
+            getdata()
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
+
     }
 
     const handleDelete = async (data) => {
+        // let localdata = JSON.parse(localStorage.getItem("category"))
+
+        // const fdata = localdata.filter((v) => v.id !== data.id)
+
+        // localStorage.setItem("category", JSON.stringify(fdata))
         try {
-            await axios.delete(`http://localhost:8000/api/v1/categories/delete-category/${data._id}`);
-            getdata();
+            await fetch("http://localhost:8000/api/v1/sub_categories/delete-subcategory/" + data._id
+                , {
+                    method: "DELETE",
+                })
         } catch (error) {
-            console.error(error);
+
         }
+        getdata()
+
     };
 
     const handleEdit = (data) => {
-        formik.setValues(data);
+        // console.log(data);
+
+        formik.setValues(data)
         setOpen(true);
         setEditing(data);
     }
 
     const handleUpdate = async (data) => {
         try {
-            await axios.put(`http://localhost:8000/api/v1/categories/update-category/${data._id}`, data, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-            getdata();
+            await fetch("http://localhost:8000/api/v1/sub_categories/update-subcategory/" + data._id
+                , {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
         } catch (error) {
-            console.error(error);
+
         }
+
+        getdata()
     }
 
     const columns = [
-        { field: 'name', headerName: 'Name', width: 130 },
-        { field: 'description', headerName: 'Description', width: 130 },
+
+        { field: 'name', headerName: 'name', width: 130 },
+        {
+            field: "Category_id",
+            headerName: "Category",
+            width: 130,
+            valueGetter: (params) => {
+              const categoryId = params.row.Category_id;
+              const category = categorydata.find((category) => category._id === categoryId);
+              return category ? category.name : 'unknown';
+            },
+        },
+        { field: 'description', headerName: 'description', width: 130 },
         {
             field: 'action',
             headerName: 'Action',
@@ -125,17 +176,23 @@ export default function Category() {
                 </>
             ),
         },
+
     ];
+
+
 
     return (
         <React.Fragment>
             <Button variant="outlined" onClick={handleClickOpen}>
                 Open form dialog
             </Button>
-            <Dialog open={open} onClose={handleClose}>
-                <form onSubmit={handleSubmit}>
-                    <DialogTitle>{editing ? 'Update' : 'Add'} Category</DialogTitle>
-                    <DialogContent>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+            >
+                <DialogContent>
+                    <form onSubmit={handleSubmit}>
+                        <DialogTitle>Subscribe</DialogTitle>
                         <TextField
                             margin="dense"
                             id="name"
@@ -147,9 +204,10 @@ export default function Category() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.name}
-                            error={touched.name && Boolean(errors.name)}
+                            error={touched.name && errors.name ? errors.name : false}
                             helperText={touched.name && errors.name ? errors.name : ""}
                         />
+
                         <TextField
                             margin="dense"
                             id="description"
@@ -161,19 +219,34 @@ export default function Category() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.description}
-                            error={touched.description && Boolean(errors.description)}
+                            error={touched.description && errors.description ? errors.description : false}
                             helperText={touched.description && errors.description ? errors.description : ""}
                         />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit">{editing ? 'Update' : 'Add'}</Button>
-                    </DialogActions>
-                </form>
+
+                        <select
+                            id="category"
+                            name="category"
+                            onChange={handleChange}
+                            value={values.category}
+                        >
+                            {categorydata.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button onClick={handleClickOpen} type="submit">{editing ? 'Updat' : 'Add'}</Button>
+                        </DialogActions>
+                    </form>
+                </DialogContent>
+
             </Dialog>
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={categorydata}
+                    rows={data}
                     columns={columns}
                     initialState={{
                         pagination: {
@@ -188,3 +261,4 @@ export default function Category() {
         </React.Fragment>
     );
 }
+

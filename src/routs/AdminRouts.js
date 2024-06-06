@@ -8,7 +8,8 @@ import Facilities from '../admin/component/facilities/Facilities';
 import Products from '../admin/component/products/Products';
 import Counter from '../admin/component/counter/Counter';
 import Coupon from '../admin/component/coupon/Coupon';
-import Contact from '../admin/component/contact/Contact';
+
+import Subcategories from '../admin/component/subcategory/Subcategories';
 
 
 function AdminRouts(props) {
@@ -18,10 +19,11 @@ function AdminRouts(props) {
             <Route exact path='/fruits' element={<Fruit />} />
              <Route exact path='/counter' element={<Counter />} />
             <Route exact path='/category' element={<Category />} />
+            <Route exact path='/subcategory' element={<Subcategories />} />
             <Route exact path='/facilities' element={<Facilities />} />
             <Route exact path='/products' element={<Products/>} />
             <Route  exact path='/coupon' element={<Coupon />}/>
-            <Route  exact path='/contact' element={<Contact />}/>
+    
         </Routes>
         </Layout>
     );

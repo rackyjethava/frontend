@@ -4,7 +4,7 @@ const handleloading=()=>(dispatch)=>{
    dispatch({type:SET_LOADING})
 }
 
- export const get_facilities=()=>(dispatch)=>{
+export const get_facilities=()=>(dispatch)=>{
    dispatch({type:GET_FACILITIES})
  }
 export const add_facilities = (data) => (dispatch) => {
