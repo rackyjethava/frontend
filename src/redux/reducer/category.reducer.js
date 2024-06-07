@@ -1,17 +1,21 @@
 import { ADD_CATEGORY, DELETE_CATEGORY, EDIT_CATEGORY, GET_CATEGORY } from "../ActionType";
 
-const categorydata={
+const initialstate={
     isloading: false,
     category: [],
     error: null
 }
 
-export const categoryReducer=(state=categorydata,action)=>{
+export const categoryReducer=(state=initialstate,action)=>{
+    console.log(action.type);
     switch (action.type) {
+        
                
         case GET_CATEGORY:
             return{
                 ...state,
+                category:action.payload,
+                isloading:false
             }
          
 
@@ -26,7 +30,7 @@ export const categoryReducer=(state=categorydata,action)=>{
             return {
                 ...state,
                 isloading:false,
-                category: state.category.filter(v => v.id !== action.payload)
+                category: state.category.filter(v => v._id !== action.payload)
             }
 
         case EDIT_CATEGORY:
@@ -34,7 +38,7 @@ export const categoryReducer=(state=categorydata,action)=>{
                 ...state,
                 isloading:false,
                 category: state.category.map((v)=>{
-                    if(v.id===action.payload.id){
+                    if(v._id===action.payload._id){
                         return action.payload
                     }else{
                         return v

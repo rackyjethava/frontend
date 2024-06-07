@@ -13,29 +13,35 @@ import { IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCategory, deleteCategory, getCategory, updateCategory } from '../../../redux/action/Category.action';
 
 export default function Category() {
     const [open, setOpen] = useState(false);
-    const [categorydata, setdata] = useState([]);
+    // const [categorydata, setdata] = useState([]);
     const [editing, setEditing] = useState(null);
+    const categorydata=useSelector((state)=>state.category)
+    // console.log(categorydata);
 
     const contectSchema = object({
         name: string().required(),
         description: string().required().min(10),
     });
 
-    const getdata = async () => {
-        try {
-            const response = await axios.get("http://localhost:8000/api/v1/categories/list-categories");
-            setdata(response.data.data);
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    const dispatch=useDispatch()
+
+    // const getdata = async () => {
+    //     try {
+    //         const response = await axios.get("http://localhost:8000/api/v1/categories/list-categories");
+    //         setdata(response.data.data);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
     useEffect(() => {
-        getdata();
-    }, [])
+        dispatch(getCategory());
+    }, []);
 
     const formik = useFormik({
         initialValues: {
@@ -45,9 +51,9 @@ export default function Category() {
         validationSchema: contectSchema,
         onSubmit: (values, { resetForm }) => {
             if (editing) {
-                handleUpdate(values);
+                dispatch(updateCategory({ ...values, _id: editing._id }));
             } else {
-                handleAdd(values);
+                dispatch(addCategory(values));
             }
             resetForm();
             handleClose();
@@ -63,30 +69,30 @@ export default function Category() {
     const handleClose = () => {
         setOpen(false);
         formik.resetForm();
-        setEditing(null);
+        setEditing(false);
     };
 
-    const handleAdd = async (data) => {
-        try {
-            await axios.post("http://localhost:8000/api/v1/categories/add-category", data, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-            getdata();
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    // const handleAdd = async (data) => {
+    //     try {
+    //         await axios.post("http://localhost:8000/api/v1/categories/add-category", data, {
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             }
+    //         });
+    //         getdata();
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
-    const handleDelete = async (data) => {
-        try {
-            await axios.delete(`http://localhost:8000/api/v1/categories/delete-category/${data._id}`);
-            getdata();
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    // const handleDelete = async (data) => {
+    //     try {
+    //         await axios.delete(`http://localhost:8000/api/v1/categories/delete-category/${data._id}`);
+    //         getdata();
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
 
     const handleEdit = (data) => {
         formik.setValues(data);
@@ -94,18 +100,7 @@ export default function Category() {
         setEditing(data);
     }
 
-    const handleUpdate = async (data) => {
-        try {
-            await axios.put(`http://localhost:8000/api/v1/categories/update-category/${data._id}`, data, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-            getdata();
-        } catch (error) {
-            console.error(error);
-        }
-    }
+
 
     const columns = [
         { field: 'name', headerName: 'Name', width: 130 },
@@ -116,10 +111,10 @@ export default function Category() {
             width: 100,
             renderCell: (params) => (
                 <>
-                    <IconButton onClick={() => handleEdit(params.row)}>
+                     <IconButton onClick={() => handleEdit(params.row)}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton onClick={() => handleDelete(params.row)}>
+                    <IconButton onClick={() => dispatch(deleteCategory(params.row._id))}>
                         <Delete />
                     </IconButton>
                 </>
@@ -173,7 +168,7 @@ export default function Category() {
             </Dialog>
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={categorydata}
+                    rows={categorydata.category}
                     columns={columns}
                     initialState={{
                         pagination: {
