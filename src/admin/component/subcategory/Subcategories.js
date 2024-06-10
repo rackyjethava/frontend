@@ -23,12 +23,11 @@ export default function Subcategories() {
     const [editing, setEditing] = useState(null);
     const categorydata = useSelector((state) => state.category);
     const subcategory = useSelector((state) => state.subcategory);
-    
+
     let contectSchema = object({
         name: string().required(),
         description: string().required().min(10),
-   
-
+        category_id: string().required(),
     });
 
     const dispatch = useDispatch();
@@ -42,7 +41,7 @@ export default function Subcategories() {
         initialValues: {
             name: '',
             description: '',
-            Category_id: ''
+            category_id:'',
         },
         validationSchema: contectSchema,
         onSubmit: (values, { resetForm }) => {
@@ -50,7 +49,8 @@ export default function Subcategories() {
                 dispatch(updateSubCategory(values));
             } else {
                 dispatch(addsubcategory(values));
-              
+                console.log(values);
+
             }
             resetForm();
             handleClose();
@@ -81,7 +81,16 @@ export default function Subcategories() {
 
     const columns = [
         { field: 'name', headerName: 'Name', width: 130 },
-        { field: 'Category_id', headerName: 'Category', width: 130 },
+        {
+            field: 'category_id',
+            headerName: 'Category',
+            width: 130,
+            valueGetter: (params) => {
+              const categoryId = params.row.category_id;
+              const categoryName = categorydata.category.find((category) => category._id === categoryId)?.name;
+              return categoryName;
+            },
+          },
         { field: 'description', headerName: 'Description', width: 130 },
         {
             field: 'action',
@@ -138,12 +147,12 @@ export default function Subcategories() {
                             helperText={touched.description && errors.description}
                         />
                         <select
-                            id="Category_id"
-                            name="category"
+                            id="category_id"
+                            name="category_id"
                             onChange={handleChange}
-                            value={values.category}
+                            value={values.category_id}
                         >
-                            {categorydata.category && categorydata.category.map((category) => (
+                            {categorydata.category.map((category) => (
                                 <option key={category._id} value={category._id}>
                                     {category.name}
                                 </option>

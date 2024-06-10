@@ -26,7 +26,9 @@ export const addsubcategory = createAsyncThunk(
         try {
             const response = await axios.post("http://localhost:8000/api/v1/sub_categories/add-subcategory", data);
             console.log(response);
-            return response.data;
+            const dataAdd = response.data.data;
+            console.log(dataAdd);
+            return dataAdd     
         } catch (error) {
             console.log(error);
         }
@@ -49,9 +51,12 @@ export const deleteSubcategory=createAsyncThunk(
 export const updateSubCategory=createAsyncThunk(
     'subcategory/edite',
     async (data) => {
+        console.log(data);
         try {
-            await axios.put(`http://localhost:8000/api/v1/sub_categories/update-subcategory/${data._id}`, data);
-            return data;
+            const response= await axios.put("http://localhost:8000/api/v1/sub_categories/update-subcategory/"+data._id,data);
+            console.log(response.data.data);
+            console.log(response.data);
+            return response.data;
            
         } catch (error) {
             console.log(error);
@@ -84,7 +89,10 @@ const subcategorySlice=createSlice({
             state.subcategory=state.subcategory.filter((v)=>v._id !==  action.payload)
         })
         .addCase(updateSubCategory.fulfilled,(state,action)=>{
+            console.log(action);
             state.subcategory = state.subcategory.map((v) => {
+                console.log(v._id);
+                console.log(action.payload._id);
                 if (v._id === action.payload._id) {
                     return action.payload;
                 } else {

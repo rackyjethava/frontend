@@ -20,10 +20,10 @@ export const addCategory = (data)=> async (dispatch) => {
   }
 };
 
-export const deleteCategory = (data)=> async (dispatch) => {
+export const deleteCategory = (id)=> async (dispatch) => {
   try {
-    await axios.delete(`http://localhost:8000/api/v1/categories/delete-category/${data}`);
-    dispatch({ type: DELETE_CATEGORY, payload: data._id });
+    await axios.delete(`http://localhost:8000/api/v1/categories/delete-category/${id}`);
+    dispatch({ type: DELETE_CATEGORY, payload: id });
 
   } catch (error) {
     console.error(error);
