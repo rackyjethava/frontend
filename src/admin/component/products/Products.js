@@ -15,13 +15,14 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { object, string } from 'yup';
+import { number, object, string } from 'yup';
 import axios from 'axios';
 import { Delete } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useSelector, useDispatch } from 'react-redux';
 import { getsubcategory } from '../../../redux/slice/subcategories.slice';
 import { getCategory } from '../../../redux/action/Category.action';
+import { fetchProducts } from '../../../redux/slice/product.slice';
 
 const API_URL = 'http://localhost:8000/api/v1/products';
 
@@ -34,8 +35,12 @@ export default function Product() {
 
   const categories = useSelector((state) => state.category);
   const allSubcategories = useSelector((state) => state.subcategory);
+  const product=useSelector((state)=>state.products)
+  console.log(product);
 
   useEffect(() => {
+
+    dispatch(fetchProducts())
     dispatch(getCategory());  
     dispatch(getsubcategory());  
   }, [dispatch]);
@@ -45,17 +50,18 @@ export default function Product() {
     description: string().required('Description is required').min(10, 'Description must be at least 10 characters'),
     category_id: string().required('Category is required'),
     SubCategory_id: string().required('Subcategory is required'),
+    price:number().required()
   });
 
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/list-product`);
-      setProducts(response.data.data);
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
-    }
-  };
+  // const fetchProducts = async () => {
+  //   try {
+  //     const response = await axios.get(`${API_URL}/list-product`);
+  //     setProducts(response.data.data);
+  //   } catch (error) {
+  //     console.error('Failed to fetch products:', error);
+  //   }
+  // };
 
   useEffect(() => {
     fetchProducts();
@@ -68,6 +74,7 @@ export default function Product() {
       description: '',
       category_id: '',
       SubCategory_id: '',
+      price:""
     },
     validationSchema: productSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -101,7 +108,7 @@ export default function Product() {
     console.log(data);
     try {
         console.log(data);
-      await axios.post(`${API_URL}/add-product`, data, {
+      await axios.post("http://localhost:8000/api/v1/products/add-product", data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -152,7 +159,6 @@ export default function Product() {
     setFieldValue('category_id', categoryId); 
     const relatedSubcategories = allSubcategories.subcategory.filter((sub) => sub.category_id === categoryId);
     setSubcategories(relatedSubcategories);
-    setFieldValue('subcategoryId', ''); 
   };
 
   const columns = [
@@ -171,6 +177,9 @@ export default function Product() {
             const subcategoryName = allSubcategories.subcategory.find((subcategory) => subcategory._id === sucategoryId)?.name;
             return subcategoryName;
           }, 
+    },
+    {
+      field: 'price', headerName: 'Price', width: 150 
     },
     {
       field: 'action',
@@ -260,6 +269,20 @@ export default function Product() {
                 ))}
               </Select>
             </FormControl>
+            <TextField
+              margin="dense"
+              id="price"
+              name="price"
+              label="Price"
+              type="text"
+              fullWidth
+              variant="standard"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.price}
+              error={touched.price && Boolean(errors.price)}
+              helperText={touched.price && errors.price}
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>

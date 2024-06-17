@@ -1,8 +1,7 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
-import { useDispatch } from "react-redux"
-import { BATCH_URL, SUB_URL } from "../../utilitis/Utiliti"
+
 
 
 
