@@ -3,9 +3,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
 
 
-
-
-
 export const getsubcategory = createAsyncThunk(
     'subcategory/get',
     async () => {
@@ -50,7 +47,6 @@ export const deleteSubcategory=createAsyncThunk(
 export const updateSubCategory=createAsyncThunk(
     'subcategory/edite',
     async (data) => {
-        console.log(data);
         try {
             const response= await axios.put("http://localhost:8000/api/v1/sub_categories/update-subcategory/"+data._id,data);
             console.log(response.data.data);
@@ -69,7 +65,6 @@ const initialState={
     error:null,
 }
 
-console.log(initialState);
 
 const subcategorySlice=createSlice({
     name :"subcategories",

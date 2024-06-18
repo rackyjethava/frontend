@@ -15,7 +15,7 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { number, object, string } from 'yup';
+import { mixed, number, object, string } from 'yup';
 import axios from 'axios';
 import { Delete } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -35,12 +35,8 @@ export default function Product() {
 
   const categories = useSelector((state) => state.category);
   const allSubcategories = useSelector((state) => state.subcategory);
-  const product=useSelector((state)=>state.products)
-  console.log(product);
 
   useEffect(() => {
-
-    dispatch(fetchProducts())
     dispatch(getCategory());  
     dispatch(getsubcategory());  
   }, [dispatch]);
@@ -50,18 +46,34 @@ export default function Product() {
     description: string().required('Description is required').min(10, 'Description must be at least 10 characters'),
     category_id: string().required('Category is required'),
     SubCategory_id: string().required('Subcategory is required'),
-    price:number().required()
+    price:number().required(),
+    image:mixed()
+    .required()
+    .test("fileSize", "The file is too large", (value) => {
+      console.log(value?.file);
+      if(value?.file){
+        return value && value.size <= 2 * 1024 * 1024; // 2MB
+      }
+      return true
+     
+  })
+  .test("fileType", "Unsupported File Format", (value) => {
+    if(value?.type){
+      return value && ["image/jpeg", "image/png", "image/jpg"].includes(value.type)
+    }
+      return true
+  }),
   });
 
 
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await axios.get(`${API_URL}/list-product`);
-  //     setProducts(response.data.data);
-  //   } catch (error) {
-  //     console.error('Failed to fetch products:', error);
-  //   }
-  // };
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/list-product`);
+      setProducts(response.data.data);
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -74,7 +86,8 @@ export default function Product() {
       description: '',
       category_id: '',
       SubCategory_id: '',
-      price:""
+      price:"",
+      image:"",
     },
     validationSchema: productSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -110,7 +123,7 @@ export default function Product() {
         console.log(data);
       await axios.post("http://localhost:8000/api/v1/products/add-product", data, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
       fetchProducts();
@@ -144,7 +157,7 @@ export default function Product() {
     try {
       await axios.put(`${API_URL}/update-product/${data._id}`, data, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
       fetchProducts();
@@ -182,6 +195,13 @@ export default function Product() {
       field: 'price', headerName: 'Price', width: 150 
     },
     {
+      field: 'image', headerName: 'Image', width: 150 ,
+      renderCell: ({ row }) => (
+        // console.log(row.name)
+     <img src={row.image.url} width="50" height="50"  />
+    )
+    },
+    {
       field: 'action',
       headerName: 'Actions',
       width: 100,
@@ -197,6 +217,7 @@ export default function Product() {
       ),
     },
   ];
+
 
   return (
     <React.Fragment>
@@ -283,6 +304,29 @@ export default function Product() {
               error={touched.price && Boolean(errors.price)}
               helperText={touched.price && errors.price}
             />
+              <TextField
+              margin="dense"
+              id="image"
+              name="image"
+              label="Image"
+              type="file"
+              fullWidth
+              variant="standard"
+              onChange={(event) => {
+                setFieldValue("image", event.currentTarget.files[0]);
+            }}
+              onBlur={handleBlur}
+              error={touched.image && Boolean(errors.image)}
+              helperText={touched.image && errors.image}
+            />
+            {
+
+              values?.image.url&&
+              <img src={values?.image.url  ? values?.image.url 
+                :
+                URL.createObjectURL(values.image)
+               } width="50" height="50"  />
+            }
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>

@@ -1,23 +1,41 @@
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { ThemeContext } from '../../../context/ThemeContext';
+import { getCategory } from '../../../redux/action/Category.action';
+import { getsubcategory } from '../../../redux/slice/subcategories.slice';
 
 function Header(props) {
-    const cart=useSelector(state=>state.cart_slice)
-    console.log(cart);
+    const cart = useSelector(state => state.cart_slice);
     const totalQty = cart.cart.reduce((acc, curr) => acc + curr.qty, 0);
-            console.log(totalQty);
 
+    const categories = useSelector((state) => state.category);
+    const allSubcategories = useSelector((state) => state.subcategory);
+    const product=useSelector((state)=>state.products)
+    console.log(product);
+    console.log(allSubcategories.subcategory);
 
+    const themeContext = useContext(ThemeContext);
 
-    const themeContext=useContext(ThemeContext)
-    console.log(themeContext);
+    const dispatch = useDispatch();
 
-    const handlrTheame=()=>{
-            themeContext.toggleTheme( themeContext.theme) 
-            
-    }
+    useEffect(() => {
+        dispatch(getCategory());
+        dispatch(getsubcategory());
+    }, [dispatch]);
+
+    const handleThemeToggle = () => {
+        themeContext.toggleTheme(themeContext.theme);
+    };
+
+    const [currentSubcategories, setCurrentSubcategories] = useState([]);
+
+    const handleCategoryClick = (categoryId) => {
+        console.log(categoryId);
+        const subcategories = allSubcategories.subcategory.filter(sub => sub.category_id === categoryId);
+        console.log(subcategories);
+        setCurrentSubcategories(subcategories);
+    };
 
     return (
         <div>
@@ -51,26 +69,39 @@ function Header(props) {
                                     <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                     <div className="dropdown-menu m-0 bg-secondary rounded-0">
                                         <NavLink to="/cart" className="dropdown-item">Cart</NavLink>
-                                        <NavLink to="/checkout" className="dropdown-item">Chackout</NavLink>
+                                        <NavLink to="/checkout" className="dropdown-item">Checkout</NavLink>
                                         <NavLink to="/testimonial" className="dropdown-item">Testimonial</NavLink>
                                         <NavLink to="/error" className="dropdown-item">404 Page</NavLink>
                                     </div>
                                 </div>
-                                <NavLink to="/contect" className="nav-item nav-link">Contact</NavLink>
+                                <NavLink to="/contact" className="nav-item nav-link">Contact</NavLink>
+                                {/* Category Dropdown */}
+                                <div className="nav-item dropdown">
+                                    <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
+                                    <div className="dropdown-menu m-0 bg-secondary rounded-0">
+                                        {categories.category.map((category) => (
+                                            <div key={category.id} className="dropdown-item" onClick={() => handleCategoryClick(category._id)}>
+                                                {category.name}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                             <div className="d-flex m-3 me-0">
-                                <button onClick={handlrTheame}>change theme</button>
+                                <button
+                                    onClick={handleThemeToggle}
+                                    className={`btn btn-md-square rounded-circle me-4 ${themeContext.theme === 'dark' ? 'btn-dark' : 'btn-light'}`}
+                                >
+                                    {themeContext.theme === 'dark' ? <i className="fas fa-sun text-warning" /> : <i className="fas fa-moon text-dark" />}
+                                </button>
 
-                                <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i className="fas fa-search text-primary" /></button>
+                                <button className="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                    <i className="fas fa-search text-primary" />
+                                </button>
 
                                 <NavLink to="/cart" className="position-relative me-4 my-auto">
-
                                     <i className="fa fa-shopping-bag fa-2x" />
-
-                                    <span
-                                        className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                                        style={{ top: '-5px', left: 15, height: 20, minWidth: 20 }}>{totalQty}
-                                    </span>
+                                    <span className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style={{ top: '-5px', left: 15, height: 20, minWidth: 20 }}>{totalQty}</span>
                                 </NavLink>
 
                                 <NavLink to="/login" className="my-auto">
@@ -81,7 +112,30 @@ function Header(props) {
                     </nav>
                 </div>
             </div>
-            {/* Navbar End */}
+            {currentSubcategories.length > 0 && (
+                <div className="modal fade show" id="subcategoryModal" style={{ display: 'block' }} tabIndex={-1} aria-labelledby="subcategoryModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-fullscreen">
+                        <div className="modal-content rounded-0">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="subcategoryModalLabel">Subcategories</h5>
+                                <button type="button" className="btn-close" onClick={() => setCurrentSubcategories([])} />
+                            </div>
+                            <div className="modal-body">
+                                <ul className="list-group">
+                                    {currentSubcategories.map((sub) => (
+
+                                        <li key={sub.id} className="list-group-item">
+
+                                            {sub.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* Subcategory Modal End */}
             {/* Modal Search Start */}
             <div className="modal fade" id="searchModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-fullscreen">

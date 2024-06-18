@@ -61,7 +61,7 @@ const initialState={
     error:null,
 }
 
-console.log(initialState);
+
 
 const couponSlice=createSlice({
     name :"coupons",
