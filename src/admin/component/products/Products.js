@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   TextField,
@@ -13,7 +13,6 @@ import {
   InputLabel,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { mixed, number, object, string } from 'yup';
 import axios from 'axios';
@@ -22,7 +21,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useSelector, useDispatch } from 'react-redux';
 import { getsubcategory } from '../../../redux/slice/subcategories.slice';
 import { getCategory } from '../../../redux/action/Category.action';
-import { fetchProducts } from '../../../redux/slice/product.slice';
 
 const API_URL = 'http://localhost:8000/api/v1/products';
 
@@ -37,8 +35,9 @@ export default function Product() {
   const allSubcategories = useSelector((state) => state.subcategory);
 
   useEffect(() => {
-    dispatch(getCategory());  
-    dispatch(getsubcategory());  
+    dispatch(getCategory());
+    dispatch(getsubcategory());
+    fetchProducts();
   }, [dispatch]);
 
   const productSchema = object({
@@ -46,25 +45,22 @@ export default function Product() {
     description: string().required('Description is required').min(10, 'Description must be at least 10 characters'),
     category_id: string().required('Category is required'),
     SubCategory_id: string().required('Subcategory is required'),
-    price:number().required(),
-    image:mixed()
-    .required()
-    .test("fileSize", "The file is too large", (value) => {
-      console.log(value?.file);
-      if(value?.file){
-        return value && value.size <= 2 * 1024 * 1024; // 2MB
-      }
-      return true
-     
-  })
-  .test("fileType", "Unsupported File Format", (value) => {
-    if(value?.type){
-      return value && ["image/jpeg", "image/png", "image/jpg"].includes(value.type)
-    }
-      return true
-  }),
+    price: number().required('Price is required'),
+    image: mixed()
+      .required('Image is required')
+      .test("fileSize", "The file is too large", (value) => {
+        if (value?.size) {
+          return value.size <= 2 * 1024 * 1024;
+        }
+        return true;
+      })
+      .test("fileType", "Unsupported File Format", (value) => {
+        if (value?.type) {
+          return ["image/jpeg", "image/png", "image/jpg"].includes(value.type);
+        }
+        return true;
+      }),
   });
-
 
   const fetchProducts = async () => {
     try {
@@ -75,27 +71,21 @@ export default function Product() {
     }
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-
   const formik = useFormik({
     initialValues: {
       name: '',
       description: '',
       category_id: '',
       SubCategory_id: '',
-      price:"",
-      image:"",
+      price: '',
+      image: '',
     },
     validationSchema: productSchema,
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit:  (values, { resetForm }) => {
       if (editing) {
-        await handleUpdate(values);
+        handleUpdate(values);
       } else {
-        await handleAdd(values);
-        console.log(values);
+         handleAdd(values);
       }
       resetForm();
       handleClose();
@@ -104,34 +94,28 @@ export default function Product() {
 
   const { handleSubmit, handleChange, handleBlur, setFieldValue, values, touched, errors } = formik;
 
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
 
   const handleClose = () => {
     setOpen(false);
     formik.resetForm();
     setEditing(null);
+    setSubcategories([]); 
   };
 
-
   const handleAdd = async (data) => {
-    console.log(data);
     try {
-        console.log(data);
-      await axios.post("http://localhost:8000/api/v1/products/add-product", data, {
+      await axios.post(`${API_URL}/add-product`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      fetchProducts();
     } catch (error) {
       console.error('Failed to add product:', error);
     }
   };
-
 
   const handleDelete = async (data) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this product?');
@@ -139,19 +123,23 @@ export default function Product() {
 
     try {
       await axios.delete(`${API_URL}/delete-product/${data._id}`);
-      fetchProducts();
     } catch (error) {
       console.error('Failed to delete product:', error);
     }
   };
 
-
   const handleEdit = (data) => {
-    formik.setValues(data);
+    const relatedSubcategories = allSubcategories.subcategory.filter((sub) => sub.category_id === data.category_id);
+    setSubcategories(relatedSubcategories);
+
+    formik.setValues({
+      ...data,
+      category_id: data.category_id,
+      SubCategory_id: data.SubCategory_id,
+    });
     setOpen(true);
     setEditing(data);
   };
-
 
   const handleUpdate = async (data) => {
     try {
@@ -160,16 +148,16 @@ export default function Product() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      fetchProducts();
     } catch (error) {
       console.error('Failed to update product:', error);
     }
   };
 
-  
   const handleCategoryChange = (event) => {
     const categoryId = event.target.value;
-    setFieldValue('category_id', categoryId); 
+    setFieldValue('category_id', categoryId);
+
+    setFieldValue('SubCategory_id', '');
     const relatedSubcategories = allSubcategories.subcategory.filter((sub) => sub.category_id === categoryId);
     setSubcategories(relatedSubcategories);
   };
@@ -177,29 +165,34 @@ export default function Product() {
   const columns = [
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'description', headerName: 'Description', width: 250 },
-    { field: 'category_id', headerName: 'Category', width: 150,  
-        valueGetter: (params) => {
+    {
+      field: 'category_id',
+      headerName: 'Category',
+      width: 150,
+      valueGetter: (params) => {
         const categoryId = params.row.category_id;
         const categoryName = categories.category.find((category) => category._id === categoryId)?.name;
         return categoryName;
-      }, 
-    },
-    { field: 'SubCategory_id', headerName: 'Subcategory', width: 150,
-        valueGetter: (params) => {
-            const sucategoryId = params.row.SubCategory_id;
-            const subcategoryName = allSubcategories.subcategory.find((subcategory) => subcategory._id === sucategoryId)?.name;
-            return subcategoryName;
-          }, 
+      },
     },
     {
-      field: 'price', headerName: 'Price', width: 150 
+      field: 'SubCategory_id',
+      headerName: 'Subcategory',
+      width: 150,
+      valueGetter: (params) => {
+        const subcategoryId = params.row.SubCategory_id;
+        const subcategoryName = allSubcategories.subcategory.find((subcategory) => subcategory._id === subcategoryId)?.name;
+        return subcategoryName;
+      },
     },
+    { field: 'price', headerName: 'Price', width: 150 },
     {
-      field: 'image', headerName: 'Image', width: 150 ,
+      field: 'image',
+      headerName: 'Image',
+      width: 150,
       renderCell: ({ row }) => (
-        // console.log(row.name)
-     <img src={row.image.url} width="50" height="50"  />
-    )
+        <img src={row.image.url} width="50" height="50" alt={row.name} />
+      ),
     },
     {
       field: 'action',
@@ -217,7 +210,6 @@ export default function Product() {
       ),
     },
   ];
-
 
   return (
     <React.Fragment>
@@ -274,21 +266,22 @@ export default function Product() {
             </FormControl>
             <FormControl fullWidth margin="dense" variant="standard">
               <InputLabel id="subcategoryId-label">Subcategory</InputLabel>
-              <Select
-                labelId="subcategoryId-label"
-                id="SubCategory_id"
-                name="SubCategory_id"
-                value={values.subcategoryId}
-                onChange={(e) => setFieldValue('SubCategory_id', e.target.value)}
-                label="Subcategory"
-                error={touched.SubCategory_id && Boolean(errors.SubCategory_id)}
-              >
-                {subcategories.map((subcategory) => (
-                  <MenuItem key={subcategory._id} value={subcategory._id}>
-                    {subcategory.name}
-                  </MenuItem>
-                ))}
-              </Select>
+              {values.category_id && (
+                <Select
+                  labelId="subcategoryId-label"
+                  id="SubCategory_id"
+                  name="SubCategory_id"
+                  value={values.SubCategory_id}
+                  onChange={(e) => setFieldValue('SubCategory_id', e.target.value)}
+                  label="Subcategory"
+                >
+                  {subcategories.map((subcategory) => (
+                    <MenuItem key={subcategory._id} value={subcategory._id}>
+                      {subcategory.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
             </FormControl>
             <TextField
               margin="dense"
@@ -304,7 +297,7 @@ export default function Product() {
               error={touched.price && Boolean(errors.price)}
               helperText={touched.price && errors.price}
             />
-              <TextField
+            <TextField
               margin="dense"
               id="image"
               name="image"
@@ -314,19 +307,22 @@ export default function Product() {
               variant="standard"
               onChange={(event) => {
                 setFieldValue("image", event.currentTarget.files[0]);
-            }}
+              }}
               onBlur={handleBlur}
               error={touched.image && Boolean(errors.image)}
               helperText={touched.image && errors.image}
             />
-            {
 
-              values?.image.url&&
-              <img src={values?.image.url  ? values?.image.url 
-                :
-                URL.createObjectURL(values.image)
-               } width="50" height="50"  />
-            }
+            {values?.image && (
+              <img
+                src={
+                  values?.image.url
+                    ? values?.image.url
+                    : URL.createObjectURL(values.image)
+                }
+                width={50} height={50} alt="Product preview"
+              />
+            )}
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
