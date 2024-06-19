@@ -143,11 +143,12 @@ export default function Product() {
 
   const handleUpdate = async (data) => {
     try {
-      await axios.put(`${API_URL}/update-product/${data._id}`, data, {
+       await axios.put(`${API_URL}/update-product/${data._id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      fetchProducts()
     } catch (error) {
       console.error('Failed to update product:', error);
     }
