@@ -112,6 +112,7 @@ export default function Product() {
           'Content-Type': 'multipart/form-data',
         },
       });
+      fetchProducts()
     } catch (error) {
       console.error('Failed to add product:', error);
     }
