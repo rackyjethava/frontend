@@ -113,7 +113,7 @@ const adminlink=[
       title:'coupon',icon:<LocalOfferIcon />,to:"/admin/coupon"
     },
     {
-      title:"verity", icon:<HomeRepairServiceIcon />,to:"/admin/verity"
+      title:"variants", icon:<HomeRepairServiceIcon />,to:"/admin/variants"
     }
 ]
 

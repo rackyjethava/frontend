@@ -10,6 +10,7 @@ import Counter from '../admin/component/counter/Counter';
 import Coupon from '../admin/component/coupon/Coupon';
 
 import Subcategories from '../admin/component/subcategory/Subcategories';
+import Variant from '../admin/component/variants/Variants';
 
 
 function AdminRouts(props) {
@@ -23,7 +24,7 @@ function AdminRouts(props) {
             <Route exact path='/facilities' element={<Facilities />} />
             <Route exact path='/products' element={<Products/>} />
             <Route  exact path='/coupon' element={<Coupon />}/>
-    
+            <Route exact path='/variants' element={<Variant/>}/>
         </Routes>
         </Layout>
     );
