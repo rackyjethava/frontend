@@ -31,8 +31,9 @@ export default function Variant() {
   const [variants, setVariants] = useState([]);
   const [editing, setEditing] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [attributes, setAttributes] = useState([{ key: '', value: '' }]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [attributes, setAttributes] = useState({});
+  const [products, setProducts] = useState([]); // Add products state
 
   const categories = useSelector((state) => state.category);
   const allSubcategories = useSelector((state) => state.subcategory);
@@ -48,10 +49,6 @@ export default function Variant() {
     category_id: string().required('Category is required'),
     SubCategory_id: string().required('Subcategory is required'),
     product_id: string().required('Product is required'),
-    attributes: object().shape({
-      key: string().required('Key is required'),
-      value: string().required('Value is required'),
-    }),
   });
 
   const fetchVariants = async () => {
@@ -66,32 +63,11 @@ export default function Variant() {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`${PRODUCTS_API_URL}/list-product`);
-      setProducts(response.data.data);
+      setProducts(response.data.data); // Update the state with fetched products
     } catch (error) {
       console.error('Failed to fetch products:', error);
     }
   };
-
-  const formik = useFormik({
-    initialValues: {
-      category_id: '',
-      SubCategory_id: '',
-      product_id: '',
-      attributes: [{ key: '', value: '' }],
-    },
-    validationSchema: variantSchema,
-    onSubmit: (values, { resetForm }) => {
-      if (editing) {
-        handleUpdate(values);
-      } else {
-        handleAdd(values);
-      }
-      resetForm();
-      handleClose();
-    },
-  });
-
-  const { handleSubmit, handleChange, handleBlur, setFieldValue, values, touched, errors } = formik;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -102,9 +78,33 @@ export default function Variant() {
     formik.resetForm();
     setEditing(null);
     setSubcategories([]);
-    setProducts([]);
-    setAttributes([{ key: '', value: '' }]);
+    setProducts([]); 
+    setAttributes({});
   };
+
+  const formik = useFormik({
+    initialValues: {
+      category_id: '',
+      SubCategory_id: '',
+      product_id: '',
+    },
+    validationSchema: variantSchema,
+    onSubmit: (values, { resetForm }) => {
+      const transformedValues = {
+        ...values,
+        attributes,
+      };
+      if (editing) {
+        handleUpdate(transformedValues);
+      } else {
+        handleAdd(transformedValues);
+      }
+      resetForm();
+      handleClose();
+    },
+  });
+
+  const { handleSubmit, handleChange, setFieldValue, values } = formik;
 
   const handleAdd = async (data) => {
     try {
@@ -126,20 +126,30 @@ export default function Variant() {
       console.error('Failed to delete variant:', error);
     }
   };
-
+  
   const handleEdit = (data) => {
     const relatedSubcategories = allSubcategories.subcategory.filter((sub) => sub.category_id === data.category_id);
     const relatedProducts = products.filter((prod) => prod.SubCategory_id === data.SubCategory_id);
     setSubcategories(relatedSubcategories);
-    setProducts(relatedProducts);
-
+    setFilteredProducts(relatedProducts);
+  
+    let attributesAsObject = {};
+    if (Array.isArray(data.attributes)) {
+      attributesAsObject = data.attributes.reduce((acc, attr) => {
+        acc[attr.key] = attr.value;
+        return acc;
+      }, {});
+    } else if (typeof data.attributes === 'object' && data.attributes !== null) {
+      attributesAsObject = data.attributes;
+    }
+  
     formik.setValues({
-      ...data,
       category_id: data.category_id,
       SubCategory_id: data.SubCategory_id,
       product_id: data.product_id,
-      // attributes: data.attributes || [{ key: '', value: '' }],
     });
+  
+    setAttributes(attributesAsObject);
     setOpen(true);
     setEditing(data);
   };
@@ -156,39 +166,39 @@ export default function Variant() {
   const handleCategoryChange = (event) => {
     const categoryId = event.target.value;
     setFieldValue('category_id', categoryId);
-
     setFieldValue('SubCategory_id', '');
-    setFieldValue('product_id', '');
+
     const relatedSubcategories = allSubcategories.subcategory.filter((sub) => sub.category_id === categoryId);
     setSubcategories(relatedSubcategories);
-    setProducts([]);
+    setFilteredProducts([]);
   };
 
   const handleSubCategoryChange = (event) => {
     const subCategoryId = event.target.value;
-    console.log(subCategoryId);
     setFieldValue('SubCategory_id', subCategoryId);
 
-    setFieldValue('product_id', '');
     const relatedProducts = products.filter((prod) => prod.SubCategory_id === subCategoryId);
-    setProducts(relatedProducts);
-    fetchProducts();
+    setFilteredProducts(relatedProducts);
   };
 
-  const handleAttributesChange = (index, field, value) => {
-    const updatedAttributes = attributes.map((attribute, i) => (
-      i === index ? { ...attribute, [field]: value } : attribute
-    ));
+  const handleProductChange = (event) => {
+    const productId = event.target.value;
+    setFieldValue('product_id', productId);
+  };
+
+  const handleAttributesChange = (key, value) => {
+    const updatedAttributes = { ...attributes, [key]: value };
     setAttributes(updatedAttributes);
     setFieldValue('attributes', updatedAttributes);
   };
 
   const addAttribute = () => {
-    setAttributes([...attributes, { key: '', value: '' }]);
+    setAttributes({ ...attributes, '': '' });
   };
 
-  const removeAttribute = (index) => {
-    const updatedAttributes = attributes.filter((_, i) => i !== index);
+  const removeAttribute = (key) => {
+    const updatedAttributes = { ...attributes };
+    delete updatedAttributes[key];
     setAttributes(updatedAttributes);
     setFieldValue('attributes', updatedAttributes);
   };
@@ -228,7 +238,11 @@ export default function Variant() {
       field: 'attributes',
       headerName: 'Attributes',
       width: 500,
-      valueGetter: (params) => JSON.stringify(params.row.attributes),
+      valueGetter: (params) => {
+        return Object.entries(params.row.attributes)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(', ');
+      },
     },
     {
       field: 'action',
@@ -297,10 +311,10 @@ export default function Variant() {
                   id="product_id"
                   name="product_id"
                   value={values.product_id}
-                  onChange={(e) => setFieldValue('product_id', e.target.value)}
+                  onChange={handleProductChange}
                   label="Product"
                 >
-                  {products.map((product) => (
+                  {filteredProducts.map((product) => (
                     <MenuItem key={product._id} value={product._id}>
                       {product.name}
                     </MenuItem>
@@ -311,7 +325,7 @@ export default function Variant() {
             {values.product_id && (
               <>
                 <h3>Attributes</h3>
-                {attributes.map((v, index) => (
+                {Object.entries(attributes).map(([key, value], index) => (
                   <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
                     <TextField
                       margin="dense"
@@ -319,8 +333,15 @@ export default function Variant() {
                       type="text"
                       fullWidth
                       variant="standard"
-                      value={v.key}
-                      onChange={(e) => handleAttributesChange(index, 'key', e.target.value)}
+                      value={key}
+                      onChange={(e) => {
+                        const newKey = e.target.value;
+                        const newAttributes = { ...attributes };
+                        newAttributes[newKey] = newAttributes[key];
+                        delete newAttributes[key];
+                        setAttributes(newAttributes);
+                        setFieldValue('attributes', newAttributes);
+                      }}
                       style={{ marginRight: '10px' }}
                     />
                     <TextField
@@ -329,10 +350,10 @@ export default function Variant() {
                       type="text"
                       fullWidth
                       variant="standard"
-                      value={v.value}
-                      onChange={(e) => handleAttributesChange(index, 'value', e.target.value)}
+                      value={value}
+                      onChange={(e) => handleAttributesChange(key, e.target.value)}
                     />
-                    <Button onClick={() => removeAttribute(index)} style={{ marginLeft: '10px' }}>
+                    <Button onClick={() => removeAttribute(key)} style={{ marginLeft: '10px' }}>
                       Remove
                     </Button>
                   </div>
