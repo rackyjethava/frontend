@@ -33,7 +33,7 @@ export default function Variant() {
   const [subcategories, setSubcategories] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [attributes, setAttributes] = useState({});
-  const [products, setProducts] = useState([]); // Add products state
+  const [products, setProducts] = useState([]);
 
   const categories = useSelector((state) => state.category);
   const allSubcategories = useSelector((state) => state.subcategory);
@@ -63,7 +63,7 @@ export default function Variant() {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(`${PRODUCTS_API_URL}/list-product`);
-      setProducts(response.data.data); // Update the state with fetched products
+      setProducts(response.data.data);
     } catch (error) {
       console.error('Failed to fetch products:', error);
     }
@@ -78,7 +78,7 @@ export default function Variant() {
     formik.resetForm();
     setEditing(null);
     setSubcategories([]);
-    setProducts([]); 
+    setFilteredProducts([]);
     setAttributes({});
   };
 
@@ -90,11 +90,15 @@ export default function Variant() {
     },
     validationSchema: variantSchema,
     onSubmit: (values, { resetForm }) => {
+      console.log('Form values on submit:', values);
       const transformedValues = {
         ...values,
         attributes,
       };
+      console.log('Transformed values:', transformedValues);
+
       if (editing) {
+        transformedValues._id = editing._id; // Make sure the ID is included in the payload for the update
         handleUpdate(transformedValues);
       } else {
         handleAdd(transformedValues);
@@ -126,13 +130,14 @@ export default function Variant() {
       console.error('Failed to delete variant:', error);
     }
   };
-  
+
   const handleEdit = (data) => {
+    console.log('Editing data:', data);
     const relatedSubcategories = allSubcategories.subcategory.filter((sub) => sub.category_id === data.category_id);
     const relatedProducts = products.filter((prod) => prod.SubCategory_id === data.SubCategory_id);
     setSubcategories(relatedSubcategories);
     setFilteredProducts(relatedProducts);
-  
+
     let attributesAsObject = {};
     if (Array.isArray(data.attributes)) {
       attributesAsObject = data.attributes.reduce((acc, attr) => {
@@ -142,13 +147,13 @@ export default function Variant() {
     } else if (typeof data.attributes === 'object' && data.attributes !== null) {
       attributesAsObject = data.attributes;
     }
-  
+
     formik.setValues({
       category_id: data.category_id,
       SubCategory_id: data.SubCategory_id,
       product_id: data.product_id,
     });
-  
+
     setAttributes(attributesAsObject);
     setOpen(true);
     setEditing(data);
@@ -156,6 +161,7 @@ export default function Variant() {
 
   const handleUpdate = async (data) => {
     try {
+      console.log('Updating data:', data);
       await axios.put(`${API_URL}/update-variant/${data._id}`, data);
       fetchVariants();
     } catch (error) {
