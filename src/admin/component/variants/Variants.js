@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   Button,
@@ -34,6 +35,7 @@ export default function Variant() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [attributes, setAttributes] = useState({});
   const [products, setProducts] = useState([]);
+  const [images, setImages] = useState([]);
 
   const categories = useSelector((state) => state.category);
   const allSubcategories = useSelector((state) => state.subcategory);
@@ -80,6 +82,7 @@ export default function Variant() {
     setSubcategories([]);
     setFilteredProducts([]);
     setAttributes({});
+    setImages([]); // Clear images
   };
 
   const formik = useFormik({
@@ -98,7 +101,7 @@ export default function Variant() {
       console.log('Transformed values:', transformedValues);
 
       if (editing) {
-        transformedValues._id = editing._id; // Make sure the ID is included in the payload for the update
+        transformedValues._id = editing._id;
         handleUpdate(transformedValues);
       } else {
         handleAdd(transformedValues);
@@ -112,13 +115,32 @@ export default function Variant() {
 
   const handleAdd = async (data) => {
     try {
-      await axios.post(`${API_URL}/add-variant`, data);
+      console.log('Adding variant:', data);
+      const formData = new FormData();
+  
+      // Append form data
+      formData.append('category_id', data.category_id);
+      formData.append('SubCategory_id', data.SubCategory_id);
+      formData.append('product_id', data.product_id);
+      formData.append('attributes', JSON.stringify(data.attributes));
+  
+      // Append images
+      images.forEach((image) => {
+        formData.append('variantImg', image);
+      });
+  
+      console.log('FormData:', formData);
+  
+      await axios.post(`${API_URL}/add-variant`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       fetchVariants();
     } catch (error) {
       console.error('Failed to add variant:', error);
     }
   };
-
   const handleDelete = async (data) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this variant?');
     if (!confirmDelete) return;
@@ -161,8 +183,27 @@ export default function Variant() {
 
   const handleUpdate = async (data) => {
     try {
+      const formData = new FormData();
+
+      // Append form data
+      formData.append('category_id', data.category_id);
+      formData.append('SubCategory_id', data.SubCategory_id);
+      formData.append('product_id', data.product_id);
+      formData.append('attributes', JSON.stringify(data.attributes));
+
+      // Append images if they exist
+      if (images.length > 0) {
+        images.forEach((image) => {
+          formData.append('variantImg', image);
+        });
+      }
+
       console.log('Updating data:', data);
-      await axios.put(`${API_URL}/update-variant/${data._id}`, data);
+      await axios.put(`${API_URL}/update-variant/${data._id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       fetchVariants();
     } catch (error) {
       console.error('Failed to update variant:', error);
@@ -209,6 +250,15 @@ export default function Variant() {
     setFieldValue('attributes', updatedAttributes);
   };
 
+  const handleImageChange = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    setImages((prevImages) => [...prevImages, ...selectedFiles]);
+  };
+
+  const removeImage = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
   const columns = [
     {
       field: 'category_id',
@@ -249,6 +299,23 @@ export default function Variant() {
           .map(([key, value]) => `${key}: ${value}`)
           .join(', ');
       },
+    },
+    {
+      field: 'variantImg',
+      headerName: 'Images',
+      width: 200,
+      renderCell: (params) => (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {params.row.variantImg.map((img, index) => (
+            <img
+              key={index}
+              src={img.url}
+              alt={`Variant Image ${index}`}
+              style={{ width: '50px', height: '50px', objectFit: 'cover', marginBottom: '5px' }}
+            />
+          ))}
+        </div>
+      ),
     },
     {
       field: 'action',
@@ -368,6 +435,37 @@ export default function Variant() {
                   Add Attribute
                 </Button>
               </>
+            )}
+
+            <input
+              accept="image/*"
+              id="variantImg"
+              type="file"
+              multiple
+              onChange={handleImageChange}
+              style={{ display: 'none' }}
+            />
+            <label htmlFor="variantImg">
+              <Button variant="outlined" component="span">
+                Upload Images
+              </Button>
+            </label>
+
+            {images.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '10px' }}>
+                {images.map((image, index) => (
+                  <div key={index} style={{ marginRight: '10px', marginBottom: '10px' }}>
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt="Uploaded"
+                      style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                    />
+                    <Button onClick={() => removeImage(index)} style={{ display: 'block', marginTop: '5px' }}>
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+              </div>
             )}
           </DialogContent>
           <DialogActions>
