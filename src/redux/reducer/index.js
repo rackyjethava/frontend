@@ -7,6 +7,7 @@ import cartSlice from "./cart.slice";
 import couponSlice from "../slice/coupon.slice";
 import { categoryReducer } from "./category.reducer";
 import subcategoriesSlice from "../slice/subcategories.slice";
+import salsepeopleSlice from "../slice/salsepeople.slice";
 
 
 
@@ -18,6 +19,7 @@ import subcategoriesSlice from "../slice/subcategories.slice";
    cart_slice:cartSlice,
    coupon:couponSlice,
    category:categoryReducer,
-   subcategory:subcategoriesSlice
+   subcategory:subcategoriesSlice,
+   salespeople:salsepeopleSlice
  })
 

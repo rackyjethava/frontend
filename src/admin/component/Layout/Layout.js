@@ -114,6 +114,9 @@ const adminlink=[
     },
     {
       title:"variants", icon:<HomeRepairServiceIcon />,to:"/admin/variants"
+    },
+    {
+      title:'salsepeople',icon:<LocalOfferIcon />,to:"/admin/salsepeople"
     }
 ]
 
