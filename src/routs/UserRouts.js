@@ -13,6 +13,7 @@ import Contect from '../user/container/contect/Contect';
 import UserLogin from '../user/container/login/UserLogin';
 import UserRagister from '../user/container/ragister/UserRagister';
 import { ThemeContext } from '../context/ThemeContext';
+import Chat from '../user/container/chat/Chat';
 
 
 function UserRouts(props) {
@@ -25,6 +26,7 @@ function UserRouts(props) {
             <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/shop" element={<Shop />} />
+                <Route exact path="/chat" element={<Chat/>} />
                 <Route exact path="/shop_detail" element={<Shop_detail />} />
                 <Route exact path="/shop/:id" element={<Shop_detail />}/>
                 <Route exact path="/cart" element={<Cart />} />
