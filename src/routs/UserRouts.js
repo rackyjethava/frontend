@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Header from '../user/component/header/Header';
 import { Route, Routes } from 'react-router-dom';
 import Footer from '../user/component/Footer/Footer';
@@ -10,15 +10,21 @@ import Checkout from '../user/container/page/checkout/Checkout';
 import Testimonial from '../user/container/page/testimonial/Testimonial';
 import Error from '../user/container/page/error/Error';
 import Contect from '../user/container/contect/Contect';
-import UserLogin from '../user/container/login/UserLogin';
-import UserRagister from '../user/container/ragister/UserRagister';
 import { ThemeContext } from '../context/ThemeContext';
 import Chat from '../user/container/chat/Chat';
+import Auth from '../user/container/Auth/Auth';
+import { useDispatch } from 'react-redux';
+import { chaekAuth } from '../redux/slice/AuthSlice';
 
 
 function UserRouts(props) {
     const themeContext=useContext(ThemeContext)
-    console.log(themeContext.them);
+
+    const dispatch=useDispatch()
+
+    useEffect(()=>{
+        dispatch(chaekAuth())
+    },[])
   
     return (
         <div className={themeContext.theme}>
@@ -34,8 +40,7 @@ function UserRouts(props) {
                 <Route exact path="/testimonial" element={<Testimonial />} />
                 <Route exact path="/error" element={<Error />} />
                 <Route exact path="/contect" element={<Contect />} />
-                <Route exact path="/login" element={<UserLogin />} />
-                <Route exact path="/register" element={<UserRagister />} />
+                <Route exact path="/Auth" element={<Auth />} />
                 
             </Routes>
             <Footer />

@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { getCategory } from '../../../redux/action/Category.action';
 import { getsubcategory } from '../../../redux/slice/subcategories.slice';
+import { logout } from '../../../redux/slice/AuthSlice';
 
 function Header(props) {
     const cart = useSelector(state => state.cart_slice);
@@ -11,9 +12,9 @@ function Header(props) {
 
     const categories = useSelector((state) => state.category);
     const allSubcategories = useSelector((state) => state.subcategory);
-    const product=useSelector((state)=>state.products)
-    console.log(product);
-    console.log(allSubcategories.subcategory);
+    const product = useSelector((state) => state.products)
+    // console.log(product);
+    // console.log(allSubcategories.subcategory);
 
     const themeContext = useContext(ThemeContext);
 
@@ -36,6 +37,14 @@ function Header(props) {
         console.log(subcategories);
         setCurrentSubcategories(subcategories);
     };
+    const {isAuth,user} = useSelector((state) => state.auth)
+    console.log(user,"adfadf");
+    
+    const handleLogout=()=>{
+        console.log(user._id);
+        
+        dispatch(logout(user._id))
+    }
 
     return (
         <div>
@@ -105,9 +114,16 @@ function Header(props) {
                                     <span className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style={{ top: '-5px', left: 15, height: 20, minWidth: 20 }}>{totalQty}</span>
                                 </NavLink>
 
-                                <NavLink to="/login" className="my-auto">
+                                {
+                                    isAuth?
+                                    <button onClick={handleLogout}>logout</button>: <NavLink to="/Auth" className="my-auto">
                                     <i className="fas fa-user fa-2x" />
                                 </NavLink>
+                                }
+                               
+
+
+
                             </div>
                         </div>
                     </nav>

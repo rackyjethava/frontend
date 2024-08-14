@@ -8,18 +8,20 @@ import couponSlice from "../slice/coupon.slice";
 import { categoryReducer } from "./category.reducer";
 import subcategoriesSlice from "../slice/subcategories.slice";
 import salsepeopleSlice from "../slice/salsepeople.slice";
+import AuthSlice from "../slice/AuthSlice";
 
 
 
- export const  rootreducer=combineReducers({
-    facilities:facilitiReducer,
-    products:productReducer,
-   review:reviewReducer,
-   counter:counterSlice,
-   cart_slice:cartSlice,
-   coupon:couponSlice,
-   category:categoryReducer,
-   subcategory:subcategoriesSlice,
-   salespeople:salsepeopleSlice
- })
+export const rootreducer = combineReducers({
+  facilities: facilitiReducer,
+  products: productReducer,
+  review: reviewReducer,
+  counter: counterSlice,
+  cart_slice: cartSlice,
+  coupon: couponSlice,
+  category: categoryReducer,
+  subcategory: subcategoriesSlice,
+  salespeople: salsepeopleSlice,
+  auth: AuthSlice
+})
 

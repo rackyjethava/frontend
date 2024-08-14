@@ -24,7 +24,6 @@ function App() {
                   <Route exact path='/admin/*' element={<AdminRouts />} />
                 </Route>
                 <Route exact path='/*' element={<UserRouts />} />
-
               </Routes>
             </PersistGate>
           </Provider>
