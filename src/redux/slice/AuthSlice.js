@@ -33,17 +33,19 @@ export const login = createAsyncThunk(
             const response = await axiosInstance.post("users/login",data);
 
             if (response.status === 200) {
+                
+                localStorage.setItem("_id",response.data.data._id)
                 return response.data;
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return rejectWithValue(error.response.data.message);
         }
     }
 );
 
 
-export const logout = createAsyncThunk(
+export const    logout = createAsyncThunk(
     'auth/logout',
     async (_id, { rejectWithValue }) => {
         console.log(_id);
@@ -55,7 +57,7 @@ export const logout = createAsyncThunk(
                 return response.data;
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return rejectWithValue(error.response.data.message);
         }
     }

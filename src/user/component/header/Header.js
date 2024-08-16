@@ -38,10 +38,10 @@ function Header(props) {
         setCurrentSubcategories(subcategories);
     };
     const {isAuth,user} = useSelector((state) => state.auth)
-    console.log(user,"adfadf");
+    // console.log(isAuth,user,"adfadf");
     
     const handleLogout=()=>{
-        console.log(user._id);
+        // console.log(user._id);
         
         dispatch(logout(user._id))
     }

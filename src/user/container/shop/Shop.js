@@ -46,7 +46,7 @@ function Shop(props) {
     }, [])
 
     const prouduct = useSelector(state => state.products)
-    // console.log(prouduct);
+    console.log(prouduct);
 
 
     return (

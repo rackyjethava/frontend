@@ -15,33 +15,37 @@ import Chat from '../user/container/chat/Chat';
 import Auth from '../user/container/Auth/Auth';
 import { useDispatch } from 'react-redux';
 import { chaekAuth } from '../redux/slice/AuthSlice';
+import PrivetRouts from './PrivetRouts';
 
 
 function UserRouts(props) {
-    const themeContext=useContext(ThemeContext)
+ 
+    const themeContext = useContext(ThemeContext)
 
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(chaekAuth())
-    },[])
-  
+    }, [])
+
     return (
         <div className={themeContext.theme}>
             <Header />
             <Routes>
                 <Route exact path="/" element={<Home />} />
-                <Route exact path="/shop" element={<Shop />} />
-                <Route exact path="/chat" element={<Chat/>} />
+                <Route element={<PrivetRouts />} >
+                    <Route exact path="/shop" element={<Shop />} />
+                </Route>
+                <Route exact path="/chat" element={<Chat />} />
                 <Route exact path="/shop_detail" element={<Shop_detail />} />
-                <Route exact path="/shop/:id" element={<Shop_detail />}/>
+                <Route exact path="/shop/:id" element={<Shop_detail />} />
                 <Route exact path="/cart" element={<Cart />} />
                 <Route exact path="/checkout" element={<Checkout />} />
                 <Route exact path="/testimonial" element={<Testimonial />} />
                 <Route exact path="/error" element={<Error />} />
                 <Route exact path="/contect" element={<Contect />} />
                 <Route exact path="/Auth" element={<Auth />} />
-                
+
             </Routes>
             <Footer />
         </div>
