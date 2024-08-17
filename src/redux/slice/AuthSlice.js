@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { BAKEND_URL } from "../../utilitis/Utiliti"
 import axios from "axios";
 import axiosInstance from "../../utilitis/axiosInstance";
+import { setAlert } from "./alert.slice";
 
 
 
@@ -28,17 +29,20 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
     'auth/login',
-    async (data, { rejectWithValue }) => {
+    async (data, {dispatch, rejectWithValue }) => {
         try {
             const response = await axiosInstance.post("users/login",data);
 
             if (response.status === 200) {
                 
                 localStorage.setItem("_id",response.data.data._id)
+                dispatch(setAlert({color:"success",message:response.data.message}))
                 return response.data;
             }
         } catch (error) {
-            // console.log(error);
+            console.log(error);
+            
+            dispatch(setAlert({color:"error",message:error.response.data.message}))
             return rejectWithValue(error.response.data.message);
         }
     }
@@ -47,17 +51,18 @@ export const login = createAsyncThunk(
 
 export const    logout = createAsyncThunk(
     'auth/logout',
-    async (_id, { rejectWithValue }) => {
+    async (_id, {dispatch, rejectWithValue }) => {
         console.log(_id);
         
         try {
             const response = await axiosInstance.post("users/logout", {_id});
 
             if (response.status === 200) {
+                dispatch(setAlert({color:"success",message:response.data.message}))
                 return response.data;
             }
         } catch (error) {
-            // console.log(error);
+            dispatch(setAlert({color:"error",message:error.data.message}))
             return rejectWithValue(error.response.data.message);
         }
     }

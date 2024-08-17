@@ -38,10 +38,18 @@ function Auth(props) {
 
         }
     };
-    if(auth.isAuth){
+
+    const handlegooglelogin = () => {
+        window.location.href = "http://localhost:8000/api/v1/users/google"
+    }
+
+    const handlefacebooklogin = () => {
+        window.location.href = "http://localhost:8000/api/v1/users/facebook"
+    }
+    if (auth.isAuth) {
         return <Navigate to="/" />
-    }   
-    
+    }
+
     return (
         <div>
             <div className="container-fluid page-header py-5">
@@ -206,6 +214,16 @@ function Auth(props) {
                                                     </p>
                                                 )}
                                             </div>
+                                            <button onClick={handlegooglelogin} style={{ display: 'flex', alignItems: 'center', padding: '10px', border: 'none', borderRadius: '5px', backgroundColor: '#4285F4', color: '#fff' }}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+                                                    <path fill="#4285F4" d="M44.5 20H24v8.5h11.9C34.9 33.1 30.6 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 3l5.9-5.9C34.7 6.5 29.7 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c10.7 0 19.7-7.8 20-20H44.5z" />
+                                                    <path fill="#34A853" d="M6.9 14.7l7.4 5.4C16.2 17 19.8 15 24 15c3 0 5.7 1.1 7.8 3l5.9-5.9C34.7 6.5 29.7 4 24 4 16.7 4 10.3 8.2 6.9 14.7z" />
+                                                    <path fill="#FBBC04" d="M24 44c5.6 0 10.7-2.1 14.6-5.5l-7-5.8C29.7 33.4 27 34 24 34c-6.7 0-12-5.4-12-12H4.1C5.8 35.8 13.8 44 24 44z" />
+                                                    <path fill="#EA4335" d="M44.5 20H24v8.5h11.9C34.9 33.1 30.6 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 3l5.9-5.9C34.7 6.5 29.7 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c10.7 0 19.7-7.8 20-20H44.5z" />
+                                                </svg>
+                                                <span style={{ marginLeft: '10px' }}>Login with Google</span>
+                                            </button>
+                                            <button onClick={handlefacebooklogin}>Facebook</button>
                                         </div>
                                     </div>
                                 </div>
